@@ -1089,353 +1089,130 @@ body {
    ESCENA 4 — QR
 ========================================================= */
 
-.qr-composition {
-
-    position:
-        relative;
-
-    width:
-        min(100%, 600px);
-
-    height:
-        clamp(330px, 47vh, 470px);
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
-
+.scene-4 .scene-content {
+    justify-content: flex-start;
 }
 
-
-.qr-backlight {
-
-    position:
-        absolute;
-
-    width:
-        350px;
-
-    height:
-        350px;
-
-    border-radius:
-        50%;
-
-    background:
-        rgba(14,165,233,.10);
-
-    filter:
-        blur(80px);
-
+.scene-4 .scene-header {
+    width: 88%;
+    flex-shrink: 0;
 }
 
+.scene-4 .qr-composition {
+    position: relative;
 
-.qr-frame {
+    width: 100%;
+    height: 56cqh;
 
-    position:
-        relative;
+    margin-top: 2cqh;
 
-    z-index:
-        3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    width:
-        clamp(240px, 48vw, 330px);
-
-    height:
-        clamp(240px, 48vw, 330px);
-
-    padding:
-        28px;
-
-    display:
-        grid;
-
-    place-items:
-        center;
-
-    border:
-        1px solid rgba(56,189,248,.24);
-
-    background:
-        rgba(2,10,19,.84);
-
-    box-shadow:
-        0 35px 80px rgba(0,0,0,.60),
-        inset 0 0 45px rgba(56,189,248,.035);
-
-    animation:
-        qrFloat 4s ease-in-out infinite;
-
+    flex-shrink: 0;
 }
 
+.scene-4 .qr-frame {
+    position: relative;
 
-@keyframes qrFloat {
+    width: 68cqw;
+    height: 68cqw;
 
-    0%,
-    100% {
+    max-width: 760px;
+    max-height: 760px;
 
-        transform:
-            translateY(0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    }
-
-    50% {
-
-        transform:
-            translateY(-8px);
-
-    }
-
-}
-
-
-.qr-image {
-
-    position:
-        relative;
-
-    z-index:
-        2;
-
-    width:
-        100%;
-
-    height:
-        100%;
-
-    object-fit:
-        contain;
-
-}
-
-
-.qr-corner {
-
-    position:
-        absolute;
-
-    z-index:
-        4;
-
-    width:
-        29px;
-
-    height:
-        29px;
-
-    border-color:
-        var(--blue);
-
-}
-
-
-.corner-tl {
-
-    top:
-        9px;
-
-    left:
-        9px;
-
-    border-top:
-        2px solid;
-
-    border-left:
-        2px solid;
-
-}
-
-
-.corner-tr {
-
-    top:
-        9px;
-
-    right:
-        9px;
-
-    border-top:
-        2px solid;
-
-    border-right:
-        2px solid;
-
-}
-
-
-.corner-bl {
-
-    bottom:
-        9px;
-
-    left:
-        9px;
-
-    border-bottom:
-        2px solid;
-
-    border-left:
-        2px solid;
-
-}
-
-
-.corner-br {
-
-    bottom:
-        9px;
-
-    right:
-        9px;
-
-    border-bottom:
-        2px solid;
-
-    border-right:
-        2px solid;
-
-}
-
-
-.qr-scan-line {
-
-    position:
-        absolute;
-
-    z-index:
-        5;
-
-    left:
-        14px;
-
-    right:
-        14px;
-
-    top:
-        18%;
-
-    height:
-        2px;
+    border-radius: 28px;
 
     background:
         linear-gradient(
-            90deg,
-            transparent,
-            var(--blue),
-            transparent
+            145deg,
+            rgba(255,255,255,.07),
+            rgba(255,255,255,.015)
         );
 
+    border: 1px solid rgba(255,255,255,.12);
+
     box-shadow:
-        0 0 16px rgba(56,189,248,.9);
+        0 30px 90px rgba(0,0,0,.55),
+        0 0 70px rgba(56,189,248,.12);
 
-    animation:
-        qrScan 2.4s ease-in-out infinite;
-
+    overflow: hidden;
 }
 
+.scene-4 .qr-image {
+    display: block;
 
-@keyframes qrScan {
+    width: 92%;
+    height: 92%;
 
-    0%,
-    100% {
+    object-fit: contain;
 
-        top:
-            18%;
+    position: relative;
+    z-index: 2;
 
-    }
+    filter:
+        drop-shadow(0 20px 30px rgba(0,0,0,.45));
 
-    50% {
-
-        top:
-            80%;
-
-    }
-
+    transform: scale(1.03);
 }
 
+.scene-4 .qr-backlight {
+    position: absolute;
 
-.qr-message {
+    width: 70cqw;
+    height: 70cqw;
 
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    gap:
-        10px;
-
-    padding:
-        10px 15px;
-
-    border:
-        1px solid rgba(56,189,248,.14);
-
-    border-radius:
-        9px;
+    border-radius: 50%;
 
     background:
-        rgba(5,18,30,.70);
+        radial-gradient(
+            circle,
+            rgba(56,189,248,.20) 0%,
+            rgba(56,189,248,.08) 35%,
+            transparent 70%
+        );
 
-    backdrop-filter:
-        blur(12px);
+    filter: blur(25px);
 
+    z-index: 0;
 }
 
+.scene-4 .qr-message {
+    margin-top: 2cqh;
 
-.qr-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
 
-    color:
-        var(--blue);
-
-    font-size:
-        20px;
-
+    flex-shrink: 0;
 }
 
+.scene-4 .qr-message strong {
+    display: block;
 
-.qr-message strong {
-
-    display:
-        block;
-
-    color:
-        var(--white);
-
-    font-size:
-        8px;
-
-    letter-spacing:
-        .13em;
-
-    text-align:
-        left;
-
+    font-size: 2.1cqw;
+    letter-spacing: .18em;
 }
 
+.scene-4 .qr-message small {
+    display: block;
 
-.qr-message small {
+    margin-top: 4px;
 
-    display:
-        block;
+    font-size: 1.45cqw;
 
-    margin-top:
-        2px;
+    color: rgba(255,255,255,.58);
+}
 
-    color:
-        var(--muted);
-
-    font-size:
-        7px;
-
-    text-align:
-        left;
-
+.scene-4 .qr-icon {
+    font-size: 3cqw;
+    color: #38bdf8;
 }
 
 
@@ -1443,485 +1220,242 @@ body {
    ESCENA 5 — TELÉFONO
 ========================================================= */
 
-.phone-composition {
-
-    position:
-        relative;
-
-    width:
-        100%;
-
-    flex:
-        1;
-
-    min-height:
-        360px;
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
-
+.scene-5 .scene-content {
+    justify-content: flex-start;
 }
 
-
-.phone-backlight {
-
-    position:
-        absolute;
-
-    width:
-        300px;
-
-    height:
-        420px;
-
-    border-radius:
-        50%;
-
-    background:
-        rgba(14,165,233,.10);
-
-    filter:
-        blur(80px);
-
+.scene-5 .scene-header {
+    width: 88%;
+    flex-shrink: 0;
 }
 
+.scene-5 .phone-composition {
+    position: relative;
 
-.phone {
+    width: 100%;
+    height: 62cqh;
 
-    position:
-        relative;
+    margin-top: 1cqh;
 
-    z-index:
-        3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    width:
-        min(53vw, 290px);
+    flex-shrink: 0;
+}
 
-    height:
-        min(62vh, 540px);
+.scene-5 .phone {
+    position: relative;
 
-    padding:
-        8px;
+    width: 48cqw;
+    height: 58cqh;
 
-    border:
-        2px solid rgba(255,255,255,.14);
+    max-width: 520px;
+    max-height: 1120px;
 
-    border-radius:
-        37px;
+    padding: 1.2cqw;
+
+    border-radius: 6cqw;
 
     background:
         linear-gradient(
             145deg,
-            #17212c,
-            #02060b
+            #273344,
+            #0b111b
         );
 
+    border: 1px solid rgba(255,255,255,.18);
+
     box-shadow:
-        0 40px 80px rgba(0,0,0,.72),
-        inset 0 0 0 1px rgba(255,255,255,.035);
+        0 40px 100px rgba(0,0,0,.65),
+        0 0 70px rgba(56,189,248,.12);
 
-    animation:
-        phoneFloat 4.5s ease-in-out infinite;
-
+    z-index: 3;
 }
 
+.scene-5 .phone-screen {
+    position: relative;
 
-@keyframes phoneFloat {
+    width: 100%;
+    height: 100%;
 
-    0%,
-    100% {
+    overflow: hidden;
 
-        transform:
-            translateY(0)
-            rotate(-1deg);
+    border-radius: 5cqw;
 
-    }
-
-    50% {
-
-        transform:
-            translateY(-9px)
-            rotate(1deg);
-
-    }
-
+    background: #050a11;
 }
 
+.scene-5 .phone-qr {
+    position: absolute;
 
-.phone-speaker {
+    inset: 0;
 
-    position:
-        absolute;
+    width: 100%;
+    height: 100%;
 
-    z-index:
-        10;
+    object-fit: cover;
 
-    top:
-        13px;
+    z-index: 1;
+}
 
-    left:
-        50%;
+.scene-5 .phone-backlight {
+    position: absolute;
 
-    transform:
-        translateX(-50%);
+    width: 65cqw;
+    height: 65cqw;
 
-    width:
-        58px;
-
-    height:
-        5px;
-
-    border-radius:
-        10px;
+    border-radius: 50%;
 
     background:
-        #010308;
-
-}
-
-
-.phone-screen {
-
-    position:
-        relative;
-
-    width:
-        100%;
-
-    height:
-        100%;
-
-    overflow:
-        hidden;
-
-    border-radius:
-        29px;
-
-    background:
-
         radial-gradient(
-            circle at center,
-            rgba(14,165,233,.14),
-            transparent 44%
-        ),
+            circle,
+            rgba(56,189,248,.22),
+            rgba(56,189,248,.07) 35%,
+            transparent 70%
+        );
 
-        #020914;
+    filter: blur(30px);
 
+    z-index: 0;
 }
 
+.scene-5 .camera-corners {
+    position: absolute;
 
-.phone-qr {
+    inset: 15%;
 
-    position:
-        absolute;
-
-    left:
-        50%;
-
-    top:
-        50%;
-
-    transform:
-        translate(-50%,-50%);
-
-    width:
-        47%;
-
-    height:
-        47%;
-
-    object-fit:
-        contain;
-
-    opacity:
-        .92;
-
+    z-index: 4;
 }
 
+.scene-5 .camera-scan {
+    position: absolute;
 
-.camera-corners span {
+    left: 10%;
+    right: 10%;
 
-    position:
-        absolute;
+    top: 50%;
 
-    z-index:
-        5;
+    height: 2px;
 
-    width:
-        40px;
-
-    height:
-        40px;
-
-    border-color:
-        var(--blue);
-
-}
-
-
-.cam-tl {
-
-    top:
-        30%;
-
-    left:
-        15%;
-
-    border-top:
-        2px solid;
-
-    border-left:
-        2px solid;
-
-}
-
-
-.cam-tr {
-
-    top:
-        30%;
-
-    right:
-        15%;
-
-    border-top:
-        2px solid;
-
-    border-right:
-        2px solid;
-
-}
-
-
-.cam-bl {
-
-    bottom:
-        30%;
-
-    left:
-        15%;
-
-    border-bottom:
-        2px solid;
-
-    border-left:
-        2px solid;
-
-}
-
-
-.cam-br {
-
-    bottom:
-        30%;
-
-    right:
-        15%;
-
-    border-bottom:
-        2px solid;
-
-    border-right:
-        2px solid;
-
-}
-
-
-.camera-scan {
-
-    position:
-        absolute;
-
-    z-index:
-        6;
-
-    left:
-        14%;
-
-    right:
-        14%;
-
-    top:
-        34%;
-
-    height:
-        2px;
-
-    background:
-        var(--blue);
+    background: #38bdf8;
 
     box-shadow:
-        0 0 18px rgba(56,189,248,.9);
+        0 0 12px #38bdf8,
+        0 0 30px rgba(56,189,248,.6);
+
+    z-index: 5;
 
     animation:
-        cameraScan 2.3s ease-in-out infinite;
-
+        cameraScan 2.2s ease-in-out infinite;
 }
 
+.scene-5 .camera-label {
+    position: absolute;
+
+    left: 50%;
+    bottom: 8%;
+
+    transform: translateX(-50%);
+
+    padding: 8px 14px;
+
+    border-radius: 999px;
+
+    background: rgba(0,0,0,.65);
+
+    border: 1px solid rgba(56,189,248,.35);
+
+    color: #fff;
+
+    font-size: 1.25cqw;
+    letter-spacing: .14em;
+
+    white-space: nowrap;
+
+    z-index: 6;
+}
+
+.scene-5 .scan-success {
+    position: absolute;
+
+    right: 5cqw;
+    bottom: 7cqh;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 12px 16px;
+
+    border-radius: 14px;
+
+    background: rgba(8,15,27,.90);
+
+    border: 1px solid rgba(34,197,94,.28);
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.35);
+
+    z-index: 10;
+}
+
+.scene-5 .scan-success > span {
+    font-size: 2.5cqw;
+    color: #22c55e;
+}
+
+.scene-5 .scan-success strong {
+    display: block;
+
+    font-size: 1.35cqw;
+    letter-spacing: .12em;
+}
+
+.scene-5 .scan-success small {
+    display: block;
+
+    margin-top: 3px;
+
+    font-size: 1.1cqw;
+
+    color: rgba(255,255,255,.55);
+}
+
+
+/* =========================================================
+   ANIMACIÓN DEL ESCÁNER
+========================================================= */
 
 @keyframes cameraScan {
 
-    0%,
-    100% {
+    0% {
+        transform: translateY(-170px);
+        opacity: 0;
+    }
 
-        top:
-            34%;
-
+    15% {
+        opacity: 1;
     }
 
     50% {
+        transform: translateY(170px);
+        opacity: 1;
+    }
 
-        top:
-            67%;
+    85% {
+        opacity: 1;
+    }
 
+    100% {
+        transform: translateY(-170px);
+        opacity: 0;
     }
 
 }
 
 
-.camera-label {
 
-    position:
-        absolute;
-
-    z-index:
-        7;
-
-    left:
-        0;
-
-    right:
-        0;
-
-    bottom:
-        13%;
-
-    text-align:
-        center;
-
-    color:
-        rgba(255,255,255,.54);
-
-    font-size:
-        7px;
-
-    font-weight:
-        900;
-
-    letter-spacing:
-        .18em;
-
-}
-
-
-.scan-success {
-
-    position:
-        absolute;
-
-    z-index:
-        8;
-
-    right:
-        4%;
-
-    bottom:
-        12%;
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    gap:
-        8px;
-
-    padding:
-        10px 13px;
-
-    border:
-        1px solid rgba(34,197,94,.20);
-
-    border-radius:
-        9px;
-
-    background:
-        rgba(2,13,8,.90);
-
-    backdrop-filter:
-        blur(12px);
-
-    box-shadow:
-        0 20px 40px rgba(0,0,0,.45);
-
-    text-align:
-        left;
-
-}
-
-
-.scan-success > span {
-
-    display:
-        grid;
-
-    place-items:
-        center;
-
-    width:
-        25px;
-
-    height:
-        25px;
-
-    border-radius:
-        50%;
-
-    color:
-        var(--green);
-
-    background:
-        rgba(34,197,94,.11);
-
-}
-
-
-.scan-success strong {
-
-    display:
-        block;
-
-    font-size:
-        8px;
-
-    letter-spacing:
-        .09em;
-
-}
-
-
-.scan-success small {
-
-    display:
-        block;
-
-    margin-top:
-        2px;
-
-    color:
-        var(--muted);
-
-    font-size:
-        7px;
-
-}
 
 
 /* =========================================================
