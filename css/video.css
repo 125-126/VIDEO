@@ -1,0 +1,2126 @@
+/* =========================================================
+   COMERCIAL AMAYA
+   VIDEO CORPORATIVO 9:16
+========================================================= */
+
+:root {
+
+    --bg: #020812;
+    --bg2: #061322;
+
+    --blue: #38bdf8;
+    --blue-soft: #0ea5e9;
+
+    --green: #22c55e;
+    --green-soft: #4ade80;
+
+    --white: #f8fafc;
+    --gray: #94a3b8;
+    --gray-dark: #64748b;
+
+    --line: rgba(56,189,248,.22);
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+
+    background:
+        radial-gradient(
+            circle at 50% 30%,
+            #0b2138 0%,
+            #020812 55%,
+            #00040a 100%
+        );
+
+    color: var(--white);
+
+    font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
+
+}
+
+
+/* =========================================================
+   FONDO
+========================================================= */
+
+.ambient-bg {
+
+    position: fixed;
+    inset: 0;
+
+    overflow: hidden;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle at 50% 20%,
+            rgba(14,165,233,.12),
+            transparent 40%
+        );
+
+}
+
+
+.ambient-light {
+
+    position: absolute;
+
+    width: 50vw;
+    height: 50vw;
+
+    border-radius: 50%;
+
+    filter: blur(90px);
+
+    opacity: .35;
+
+    animation: ambientMove 12s ease-in-out infinite alternate;
+
+}
+
+
+.light-1 {
+
+    top: -20%;
+    left: -15%;
+
+    background: rgba(14,165,233,.22);
+
+}
+
+
+.light-2 {
+
+    right: -20%;
+    top: 30%;
+
+    background: rgba(34,197,94,.12);
+
+    animation-delay: -4s;
+
+}
+
+
+.light-3 {
+
+    bottom: -25%;
+    left: 30%;
+
+    background: rgba(56,189,248,.10);
+
+    animation-delay: -7s;
+
+}
+
+
+@keyframes ambientMove {
+
+    from {
+        transform: translate3d(-20px,-10px,0) scale(1);
+    }
+
+    to {
+        transform: translate3d(30px,30px,0) scale(1.12);
+    }
+
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.grid {
+
+    position: absolute;
+
+    width: 150%;
+    height: 80%;
+
+    left: -25%;
+    bottom: -18%;
+
+    opacity: .20;
+
+    background-image:
+        linear-gradient(
+            rgba(56,189,248,.14) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(56,189,248,.14) 1px,
+            transparent 1px
+        );
+
+    background-size: 55px 55px;
+
+    transform:
+        perspective(550px)
+        rotateX(62deg);
+
+    transform-origin: center bottom;
+
+    animation: gridMove 10s linear infinite;
+
+}
+
+
+@keyframes gridMove {
+
+    from {
+        transform:
+            perspective(550px)
+            rotateX(62deg)
+            translateY(0);
+    }
+
+    to {
+        transform:
+            perspective(550px)
+            rotateX(62deg)
+            translateY(55px);
+    }
+
+}
+
+
+/* =========================================================
+   PARTICULAS
+========================================================= */
+
+.particles span {
+
+    position: absolute;
+
+    width: 3px;
+    height: 3px;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.55);
+
+    box-shadow:
+        0 0 12px rgba(56,189,248,.8);
+
+    animation:
+        particleFloat
+        linear
+        infinite;
+
+}
+
+
+.particles span:nth-child(1) {
+    left: 10%;
+    top: 80%;
+    animation-duration: 8s;
+}
+
+.particles span:nth-child(2) {
+    left: 20%;
+    top: 60%;
+    animation-duration: 11s;
+}
+
+.particles span:nth-child(3) {
+    left: 35%;
+    top: 85%;
+    animation-duration: 9s;
+}
+
+.particles span:nth-child(4) {
+    left: 48%;
+    top: 55%;
+    animation-duration: 12s;
+}
+
+.particles span:nth-child(5) {
+    left: 65%;
+    top: 75%;
+    animation-duration: 10s;
+}
+
+.particles span:nth-child(6) {
+    left: 78%;
+    top: 50%;
+    animation-duration: 13s;
+}
+
+.particles span:nth-child(7) {
+    left: 88%;
+    top: 80%;
+    animation-duration: 9s;
+}
+
+.particles span:nth-child(8) {
+    left: 55%;
+    top: 90%;
+    animation-duration: 12s;
+}
+
+.particles span:nth-child(9) {
+    left: 30%;
+    top: 40%;
+    animation-duration: 10s;
+}
+
+.particles span:nth-child(10) {
+    left: 72%;
+    top: 30%;
+    animation-duration: 14s;
+}
+
+
+@keyframes particleFloat {
+
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    80% {
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(-300px);
+        opacity: 0;
+    }
+
+}
+
+
+/* =========================================================
+   APP
+========================================================= */
+
+.video-app {
+
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 0;
+
+}
+
+
+/* =========================================================
+   FRAME 9:16
+========================================================= */
+
+.video-stage {
+
+    position: relative;
+
+    width: min(
+        calc(100vh * .5625),
+        100vw
+    );
+
+    height: min(
+        100vh,
+        calc(100vw / .5625)
+    );
+
+    aspect-ratio: 9 / 16;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            180deg,
+            #061322,
+            #020812
+        );
+
+    box-shadow:
+        0 0 100px rgba(0,0,0,.65),
+        0 0 70px rgba(14,165,233,.08);
+
+}
+
+
+/* =========================================================
+   ESCENAS
+========================================================= */
+
+.scene {
+
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding:
+        10vh
+        7vw
+        10vh;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transform:
+        scale(1.06)
+        translateY(20px);
+
+    filter: blur(8px);
+
+    transition:
+        opacity 1s ease,
+        transform 1.2s cubic-bezier(.22,.61,.36,1),
+        filter 1.2s ease,
+        visibility 1s;
+
+}
+
+
+.scene.active {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    transform:
+        scale(1)
+        translateY(0);
+
+    filter: blur(0);
+
+}
+
+
+/* =========================================================
+   CONTENIDO
+========================================================= */
+
+.scene-content {
+
+    position: relative;
+
+    z-index: 5;
+
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+}
+
+
+.eyebrow {
+
+    font-size: clamp(9px, 1.7vw, 13px);
+
+    letter-spacing: .30em;
+
+    color: var(--blue);
+
+    font-weight: 700;
+
+    margin-bottom: 16px;
+
+}
+
+
+.scene-line {
+
+    width: 50px;
+    height: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--blue),
+            transparent
+        );
+
+    margin-bottom: 28px;
+
+}
+
+
+.scene h1 {
+
+    font-size: clamp(42px, 8vw, 78px);
+
+    line-height: .98;
+
+    letter-spacing: -.045em;
+
+    font-weight: 800;
+
+    margin-bottom: 22px;
+
+}
+
+
+.scene h1 span,
+.scene h2 span {
+
+    color: var(--blue);
+
+    text-shadow:
+        0 0 35px rgba(56,189,248,.25);
+
+}
+
+
+.scene h2 {
+
+    font-size: clamp(32px, 6.5vw, 58px);
+
+    line-height: 1.03;
+
+    letter-spacing: -.04em;
+
+    font-weight: 800;
+
+    margin-bottom: 22px;
+
+}
+
+
+.scene p {
+
+    max-width: 390px;
+
+    font-size: clamp(14px, 2.5vw, 18px);
+
+    line-height: 1.55;
+
+    color: var(--gray);
+
+}
+
+
+/* =========================================================
+   NUMERO
+========================================================= */
+
+.scene-number {
+
+    position: absolute;
+
+    right: 25px;
+    bottom: 25px;
+
+    z-index: 20;
+
+    font-size: 10px;
+
+    letter-spacing: .18em;
+
+    color: rgba(255,255,255,.45);
+
+}
+
+
+.scene-number span {
+
+    color: rgba(255,255,255,.18);
+
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.scene-logo {
+
+    margin-top: 50px;
+
+    padding: 18px 30px;
+
+    border-radius: 18px;
+
+    background:
+        rgba(255,255,255,.04);
+
+    border:
+        1px solid rgba(255,255,255,.08);
+
+    backdrop-filter: blur(12px);
+
+}
+
+
+.scene-logo img {
+
+    width: min(220px, 48vw);
+
+    display: block;
+
+}
+
+
+/* =========================================================
+   POS
+========================================================= */
+
+.visual-card {
+
+    position: relative;
+
+    margin-top: 38px;
+
+    width: 100%;
+
+    max-width: 420px;
+
+}
+
+
+.visual-card img {
+
+    width: 100%;
+
+    display: block;
+
+    border-radius: 24px;
+
+    position: relative;
+
+    z-index: 2;
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.5);
+
+    animation:
+        imageFloat
+        5s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+.visual-glow {
+
+    position: absolute;
+
+    inset: 15%;
+
+    background: var(--blue);
+
+    filter: blur(70px);
+
+    opacity: .18;
+
+}
+
+
+.visual-label {
+
+    position: absolute;
+
+    left: 20px;
+    bottom: 18px;
+
+    z-index: 5;
+
+    padding: 9px 13px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(2,8,18,.78);
+
+    border:
+        1px solid rgba(56,189,248,.25);
+
+    backdrop-filter: blur(10px);
+
+    font-size: 9px;
+
+    letter-spacing: .15em;
+
+    color: white;
+
+}
+
+
+.dot {
+
+    display: inline-block;
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: var(--green);
+
+    box-shadow:
+        0 0 10px var(--green);
+
+    margin-right: 6px;
+
+}
+
+
+@keyframes imageFloat {
+
+    from {
+        transform: translateY(4px) scale(1);
+    }
+
+    to {
+        transform: translateY(-10px) scale(1.015);
+    }
+
+}
+
+
+/* =========================================================
+   TICKET
+========================================================= */
+
+.ticket-wrapper {
+
+    position: relative;
+
+    margin-top: 28px;
+
+    height: 50vh;
+
+    max-height: 650px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+.ticket-image {
+
+    position: relative;
+
+    z-index: 2;
+
+    height: 100%;
+
+    max-width: 78vw;
+
+    object-fit: contain;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 35px 80px rgba(0,0,0,.55);
+
+    animation:
+        ticketFloat
+        6s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+.ticket-glow {
+
+    position: absolute;
+
+    width: 70%;
+    height: 70%;
+
+    background:
+        rgba(56,189,248,.18);
+
+    filter: blur(70px);
+
+}
+
+
+.ticket-label {
+
+    position: absolute;
+
+    z-index: 6;
+
+    bottom: 5px;
+
+    padding: 8px 15px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(2,8,18,.85);
+
+    border:
+        1px solid rgba(255,255,255,.10);
+
+    font-size: 9px;
+
+    letter-spacing: .15em;
+
+}
+
+
+@keyframes ticketFloat {
+
+    from {
+        transform: translateY(8px) rotate(-.5deg);
+    }
+
+    to {
+        transform: translateY(-8px) rotate(.5deg);
+    }
+
+}
+
+
+/* =========================================================
+   QR
+========================================================= */
+
+.qr-wrapper {
+
+    position: relative;
+
+    margin-top: 28px;
+
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+}
+
+
+.qr-frame {
+
+    position: relative;
+
+    width: min(58vw, 350px);
+
+    height: min(58vw, 350px);
+
+    overflow: hidden;
+
+    border-radius: 28px;
+
+    border:
+        1px solid rgba(56,189,248,.35);
+
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,.04),
+        0 25px 70px rgba(0,0,0,.6),
+        0 0 60px rgba(56,189,248,.10);
+
+    background: white;
+
+}
+
+
+.qr-frame img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    object-position: center;
+
+    transform: scale(1.65);
+
+    animation:
+        qrZoom
+        6s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+@keyframes qrZoom {
+
+    from {
+        transform: scale(1.55);
+    }
+
+    to {
+        transform: scale(1.85);
+    }
+
+}
+
+
+.qr-focus {
+
+    position: absolute;
+
+    inset: 18%;
+
+    border:
+        2px solid var(--green);
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 0 25px rgba(34,197,94,.35);
+
+}
+
+
+.qr-pulse {
+
+    position: absolute;
+
+    width: 230px;
+    height: 230px;
+
+    border-radius: 50%;
+
+    border:
+        1px solid rgba(34,197,94,.3);
+
+    animation:
+        qrPulse
+        2.5s
+        ease-out
+        infinite;
+
+}
+
+
+@keyframes qrPulse {
+
+    0% {
+        transform: scale(.7);
+        opacity: .8;
+    }
+
+    100% {
+        transform: scale(1.45);
+        opacity: 0;
+    }
+
+}
+
+
+.qr-corner {
+
+    position: absolute;
+
+    width: 30px;
+    height: 30px;
+
+    border-color: var(--green);
+
+    z-index: 4;
+
+}
+
+
+.top-left {
+
+    top: 16px;
+    left: 16px;
+
+    border-top: 3px solid;
+    border-left: 3px solid;
+
+}
+
+
+.top-right {
+
+    top: 16px;
+    right: 16px;
+
+    border-top: 3px solid;
+    border-right: 3px solid;
+
+}
+
+
+.bottom-left {
+
+    bottom: 16px;
+    left: 16px;
+
+    border-bottom: 3px solid;
+    border-left: 3px solid;
+
+}
+
+
+.bottom-right {
+
+    bottom: 16px;
+    right: 16px;
+
+    border-bottom: 3px solid;
+    border-right: 3px solid;
+
+}
+
+
+.scan-line {
+
+    position: absolute;
+
+    left: 8%;
+    right: 8%;
+
+    height: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--green),
+            transparent
+        );
+
+    box-shadow:
+        0 0 18px var(--green);
+
+    z-index: 8;
+
+    animation:
+        scanLine
+        2.7s
+        ease-in-out
+        infinite;
+
+}
+
+
+@keyframes scanLine {
+
+    0% {
+        top: 12%;
+    }
+
+    50% {
+        top: 88%;
+    }
+
+    100% {
+        top: 12%;
+    }
+
+}
+
+
+.qr-caption {
+
+    margin-top: 18px;
+
+    font-size: 9px;
+
+    letter-spacing: .25em;
+
+    color: var(--green);
+
+}
+
+
+/* =========================================================
+   TELEFONO
+========================================================= */
+
+.phone-wrapper {
+
+    position: relative;
+
+    margin-top: 30px;
+
+}
+
+
+.phone-frame {
+
+    position: relative;
+
+    width: min(52vw, 280px);
+
+    height: min(72vw, 430px);
+
+    padding: 9px;
+
+    border-radius: 35px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #344154,
+            #080d15
+        );
+
+    border:
+        1px solid rgba(255,255,255,.12);
+
+    box-shadow:
+        0 40px 90px rgba(0,0,0,.7),
+        inset 0 0 0 2px rgba(255,255,255,.04);
+
+    overflow: hidden;
+
+}
+
+
+.phone-frame img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    border-radius: 28px;
+
+}
+
+
+.phone-speaker {
+
+    position: absolute;
+
+    z-index: 10;
+
+    top: 16px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 60px;
+    height: 5px;
+
+    border-radius: 10px;
+
+    background: rgba(0,0,0,.7);
+
+}
+
+
+.phone-scan {
+
+    position: absolute;
+
+    left: 8%;
+    right: 8%;
+
+    height: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--green),
+            transparent
+        );
+
+    box-shadow:
+        0 0 20px var(--green);
+
+    animation:
+        phoneScan
+        2.8s
+        ease-in-out
+        infinite;
+
+}
+
+
+@keyframes phoneScan {
+
+    10% {
+        top: 18%;
+    }
+
+    50% {
+        top: 78%;
+    }
+
+    90% {
+        top: 18%;
+    }
+
+}
+
+
+.phone-glow {
+
+    position: absolute;
+
+    inset: 15%;
+
+    background:
+        rgba(34,197,94,.12);
+
+    filter: blur(60px);
+
+}
+
+
+.phone-wrapper {
+    isolation: isolate;
+}
+
+
+/* =========================================================
+   HISTORIAL
+========================================================= */
+
+.history-wrapper {
+
+    position: relative;
+
+    margin-top: 30px;
+
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+}
+
+
+.history-frame {
+
+    position: relative;
+
+    width: min(80vw, 430px);
+
+    height: 38vh;
+
+    overflow: hidden;
+
+    border-radius: 24px;
+
+    border:
+        1px solid rgba(255,255,255,.12);
+
+    background:
+        rgba(255,255,255,.03);
+
+    box-shadow:
+        0 35px 80px rgba(0,0,0,.55);
+
+}
+
+
+.history-frame img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    display: block;
+
+    animation:
+        historyZoom
+        8s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+@keyframes historyZoom {
+
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.06);
+    }
+
+}
+
+
+.history-glow {
+
+    position: absolute;
+
+    width: 70%;
+    height: 70%;
+
+    background:
+        rgba(56,189,248,.12);
+
+    filter: blur(70px);
+
+}
+
+
+.history-badge {
+
+    position: relative;
+
+    margin-top: 15px;
+
+    padding: 9px 14px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(2,8,18,.85);
+
+    border:
+        1px solid rgba(34,197,94,.25);
+
+    color: rgba(255,255,255,.8);
+
+    font-size: 9px;
+
+    letter-spacing: .13em;
+
+}
+
+
+.check {
+
+    color: var(--green);
+
+    font-weight: 900;
+
+    margin-right: 5px;
+
+}
+
+
+/* =========================================================
+   FINAL
+========================================================= */
+
+.final-content {
+
+    position: relative;
+
+}
+
+
+.final-glow {
+
+    position: absolute;
+
+    width: 500px;
+    height: 500px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(56,189,248,.17),
+            transparent 65%
+        );
+
+    filter: blur(5px);
+
+    animation:
+        finalGlow
+        4s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+@keyframes finalGlow {
+
+    from {
+        transform: scale(.85);
+        opacity: .6;
+    }
+
+    to {
+        transform: scale(1.15);
+        opacity: 1;
+    }
+
+}
+
+
+.final-logo img {
+
+    width: min(290px, 62vw);
+
+    filter:
+        drop-shadow(
+            0 15px 40px rgba(0,0,0,.5)
+        );
+
+}
+
+
+.final-line {
+
+    width: 65px;
+    height: 2px;
+
+    margin: 32px auto 20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--blue),
+            transparent
+        );
+
+}
+
+
+.final-small {
+
+    font-size: 10px;
+
+    letter-spacing: .30em;
+
+    color: var(--blue);
+
+    font-weight: 700;
+
+    margin-bottom: 22px;
+
+}
+
+
+.final-content h1 {
+
+    font-size: clamp(38px, 7vw, 68px);
+
+    margin-bottom: 24px;
+
+}
+
+
+.final-content p {
+
+    max-width: 400px;
+
+}
+
+
+.final-tagline {
+
+    margin-top: 45px;
+
+    font-size: 10px;
+
+    letter-spacing: .35em;
+
+    color: rgba(255,255,255,.4);
+
+}
+
+
+/* =========================================================
+   PROGRESO
+========================================================= */
+
+.progress-container {
+
+    position: absolute;
+
+    z-index: 50;
+
+    left: 25px;
+    right: 25px;
+    bottom: 16px;
+
+}
+
+
+.progress-track {
+
+    width: 100%;
+
+    height: 2px;
+
+    background:
+        rgba(255,255,255,.08);
+
+    overflow: hidden;
+
+}
+
+
+.progress-bar {
+
+    height: 100%;
+
+    width: 0%;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--blue),
+            var(--green)
+        );
+
+    box-shadow:
+        0 0 12px rgba(56,189,248,.5);
+
+}
+
+
+/* =========================================================
+   SONIDO
+========================================================= */
+
+.sound-indicator {
+
+    position: absolute;
+
+    z-index: 60;
+
+    left: 25px;
+    top: 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    font-size: 8px;
+
+    letter-spacing: .16em;
+
+    color: rgba(255,255,255,.35);
+
+    opacity: 0;
+
+    transition: opacity .5s ease;
+
+}
+
+
+.sound-indicator.visible {
+    opacity: 1;
+}
+
+
+.sound-bars {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 2px;
+
+    height: 13px;
+
+}
+
+
+.sound-bars i {
+
+    display: block;
+
+    width: 2px;
+
+    background: var(--green);
+
+    border-radius: 5px;
+
+    animation:
+        soundBars
+        .7s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+.sound-bars i:nth-child(1) {
+    height: 5px;
+    animation-delay: -.2s;
+}
+
+.sound-bars i:nth-child(2) {
+    height: 11px;
+}
+
+.sound-bars i:nth-child(3) {
+    height: 7px;
+    animation-delay: -.4s;
+}
+
+.sound-bars i:nth-child(4) {
+    height: 12px;
+    animation-delay: -.1s;
+}
+
+
+@keyframes soundBars {
+
+    from {
+        transform: scaleY(.5);
+    }
+
+    to {
+        transform: scaleY(1.1);
+    }
+
+}
+
+
+/* =========================================================
+   PANTALLA DE INICIO
+========================================================= */
+
+.start-screen {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1000;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #0b2138,
+            #020812 65%,
+            #00040a
+        );
+
+    transition:
+        opacity 1s ease,
+        visibility 1s ease;
+
+}
+
+
+.start-screen.hidden {
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+}
+
+
+.start-glow {
+
+    position: absolute;
+
+    width: 400px;
+    height: 400px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(56,189,248,.10);
+
+    filter: blur(80px);
+
+    animation:
+        startGlow
+        4s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+@keyframes startGlow {
+
+    from {
+        transform: scale(.8);
+    }
+
+    to {
+        transform: scale(1.2);
+    }
+
+}
+
+
+.start-content {
+
+    position: relative;
+
+    z-index: 2;
+
+    width: 90%;
+
+    max-width: 500px;
+
+    text-align: center;
+
+}
+
+
+.start-logo img {
+
+    width: min(280px, 70vw);
+
+    margin-bottom: 30px;
+
+}
+
+
+.start-line {
+
+    width: 60px;
+    height: 2px;
+
+    margin: 0 auto 20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--blue),
+            transparent
+        );
+
+}
+
+
+.start-small {
+
+    font-size: 10px;
+
+    letter-spacing: .35em;
+
+    color: var(--blue);
+
+    font-weight: 700;
+
+    margin-bottom: 18px;
+
+}
+
+
+.start-content h1 {
+
+    font-size: clamp(42px, 9vw, 78px);
+
+    line-height: .95;
+
+    letter-spacing: -.05em;
+
+    margin-bottom: 22px;
+
+}
+
+
+.start-content h1 span {
+
+    color: var(--blue);
+
+}
+
+
+.start-content p {
+
+    max-width: 360px;
+
+    margin: 0 auto 32px;
+
+    color: var(--gray);
+
+    font-size: 15px;
+
+    line-height: 1.5;
+
+}
+
+
+.start-button {
+
+    border: 1px solid rgba(56,189,248,.45);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(14,165,233,.18),
+            rgba(34,197,94,.10)
+        );
+
+    color: white;
+
+    padding: 16px 24px;
+
+    border-radius: 999px;
+
+    font-size: 11px;
+
+    letter-spacing: .16em;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    box-shadow:
+        0 0 30px rgba(56,189,248,.08);
+
+    transition:
+        transform .3s ease,
+        box-shadow .3s ease,
+        border-color .3s ease;
+
+}
+
+
+.start-button:hover {
+
+    transform: translateY(-3px);
+
+    border-color: var(--blue);
+
+    box-shadow:
+        0 10px 40px rgba(56,189,248,.18);
+
+}
+
+
+.play-icon {
+
+    color: var(--green);
+
+}
+
+
+.start-hint {
+
+    margin-top: 18px;
+
+    color: rgba(255,255,255,.28);
+
+    font-size: 9px;
+
+    letter-spacing: .10em;
+
+}
+
+
+/* =========================================================
+   ANIMACIONES DE ENTRADA
+========================================================= */
+
+.scene.active .eyebrow,
+.scene.active h1,
+.scene.active h2,
+.scene.active p,
+.scene.active .scene-logo,
+.scene.active .visual-card,
+.scene.active .ticket-wrapper,
+.scene.active .qr-wrapper,
+.scene.active .phone-wrapper,
+.scene.active .history-wrapper,
+.scene.active .final-logo {
+
+    animation:
+        contentEnter
+        1s
+        cubic-bezier(.22,.61,.36,1)
+        both;
+
+}
+
+
+.scene.active h1,
+.scene.active h2 {
+    animation-delay: .12s;
+}
+
+
+.scene.active p {
+    animation-delay: .22s;
+}
+
+
+.scene.active .visual-card,
+.scene.active .ticket-wrapper,
+.scene.active .qr-wrapper,
+.scene.active .phone-wrapper,
+.scene.active .history-wrapper {
+    animation-delay: .32s;
+}
+
+
+@keyframes contentEnter {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(30px)
+            scale(.97);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .video-stage {
+
+        width: 100vw;
+        height: 100vh;
+
+        max-width: none;
+        max-height: none;
+
+    }
+
+
+    .scene {
+
+        padding:
+            8vh
+            6vw
+            8vh;
+
+    }
+
+
+    .scene p {
+
+        max-width: 330px;
+
+        font-size: 13px;
+
+    }
+
+
+    .visual-card {
+
+        margin-top: 30px;
+
+        max-width: 90vw;
+
+    }
+
+
+    .ticket-wrapper {
+
+        height: 43vh;
+
+    }
+
+
+    .ticket-image {
+
+        max-width: 68vw;
+
+    }
+
+
+    .qr-frame {
+
+        width: 68vw;
+        height: 68vw;
+
+    }
+
+
+    .phone-frame {
+
+        width: 58vw;
+        height: 76vw;
+
+    }
+
+
+    .history-frame {
+
+        width: 86vw;
+
+        height: 34vh;
+
+    }
+
+
+    .scene-number {
+
+        right: 17px;
+        bottom: 22px;
+
+    }
+
+
+    .progress-container {
+
+        left: 18px;
+        right: 18px;
+
+    }
+
+}
+
+
+/* =========================================================
+   PANTALLAS MUY BAJAS
+========================================================= */
+
+@media (max-height: 700px) {
+
+    .scene h1 {
+
+        font-size: 40px;
+
+    }
+
+
+    .scene h2 {
+
+        font-size: 29px;
+
+    }
+
+
+    .scene p {
+
+        font-size: 12px;
+
+    }
+
+
+    .ticket-wrapper {
+
+        height: 37vh;
+
+    }
+
+
+    .phone-frame {
+
+        height: 58vh;
+
+    }
+
+
+    .history-frame {
+
+        height: 30vh;
+
+    }
+
+
+    .visual-card {
+
+        margin-top: 20px;
+
+    }
+
+
+    .qr-wrapper {
+
+        margin-top: 20px;
+
+    }
+
+}
+
+
+/* =========================================================
+   REDUCIR ANIMACIONES SI EL SISTEMA LO PIDE
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration: .01ms !important;
+
+        animation-iteration-count: 1 !important;
+
+        transition-duration: .01ms !important;
+
+    }
+
+}

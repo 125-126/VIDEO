@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
+
+    <title>Comercial Amaya | Evolucionando juntos</title>
+
+    <link rel="stylesheet" href="css/video.css">
+</head>
+
+<body>
+
+    <!-- =====================================================
+         FONDO GENERAL
+    ====================================================== -->
+
+    <div class="ambient-bg">
+        <div class="ambient-light light-1"></div>
+        <div class="ambient-light light-2"></div>
+        <div class="ambient-light light-3"></div>
+
+        <div class="grid"></div>
+
+        <div class="particles">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+
+    <!-- =====================================================
+         PANTALLA DE INICIO
+    ====================================================== -->
+
+    <div id="startScreen" class="start-screen">
+
+        <div class="start-glow"></div>
+
+        <div class="start-content">
+
+            <div class="start-logo">
+                <img src="img/logo_amaya.png" alt="Comercial Amaya">
+            </div>
+
+            <div class="start-line"></div>
+
+            <div class="start-small">
+                COMERCIAL AMAYA
+            </div>
+
+            <h1>
+                Evolucionando<br>
+                <span>juntos</span>
+            </h1>
+
+            <p>
+                Descubre una nueva forma de realizar
+                y consultar tus pagos.
+            </p>
+
+            <button id="startButton" class="start-button">
+                <span class="play-icon">▶</span>
+                <span>INICIAR EXPERIENCIA</span>
+            </button>
+
+            <div class="start-hint">
+                Activa el sonido para disfrutar la experiencia
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         VIDEO / PRESENTACIÓN
+    ====================================================== -->
+
+    <main id="videoApp" class="video-app">
+
+        <div class="video-stage" id="videoStage">
+
+
+            <!-- =================================================
+                 ESCENA 1
+            ================================================== -->
+
+            <section class="scene scene-1 active" data-scene="1">
+
+                <div class="scene-content">
+
+                    <div class="eyebrow">
+                        COMERCIAL AMAYA
+                    </div>
+
+                    <div class="scene-line"></div>
+
+                    <h1>
+                        Estamos<br>
+                        <span>evolucionando.</span>
+                    </h1>
+
+                    <p>
+                        Una nueva experiencia de pago,
+                        pensada para ti.
+                    </p>
+
+                    <div class="scene-logo">
+                        <img
+                            src="img/logo_amaya.png"
+                            alt="Comercial Amaya"
+                        >
+                    </div>
+
+                </div>
+
+                <div class="scene-number">
+                    01 <span>/ 07</span>
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 ESCENA 2
+            ================================================== -->
+
+            <section class="scene scene-2" data-scene="2">
+
+                <div class="scene-content">
+
+                    <div class="eyebrow">
+                        NUEVA FORMA DE PAGAR
+                    </div>
+
+                    <h2>
+                        Ahora puedes
+                        <span>pagar electrónicamente.</span>
+                    </h2>
+
+                    <p>
+                        Nuestros cobradores utilizan
+                        dispositivos POS para realizar
+                        tus pagos de forma rápida,
+                        moderna y segura.
+                    </p>
+
+                    <div class="visual-card pos-card">
+
+                        <div class="visual-glow"></div>
+
+                        <img
+                            src="img/pos_amaya.png"
+                            alt="Pago electrónico con POS"
+                        >
+
+                        <div class="visual-label">
+                            <span class="dot"></span>
+                            PAGO ELECTRÓNICO
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="scene-number">
+                    02 <span>/ 07</span>
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 ESCENA 3
+            ================================================== -->
+
+            <section class="scene scene-3" data-scene="3">
+
+                <div class="scene-content">
+
+                    <div class="eyebrow">
+                        TU COMPROBANTE
+                    </div>
+
+                    <h2>
+                        Recibe tu
+                        <span>ticket de pago.</span>
+                    </h2>
+
+                    <p>
+                        Al finalizar tu pago recibirás
+                        un comprobante con la información
+                        de tu operación.
+                    </p>
+
+                    <div class="ticket-wrapper">
+
+                        <div class="ticket-glow"></div>
+
+                        <img
+                            class="ticket-image"
+                            src="img/ticket_amaya.png"
+                            alt="Ticket de pago"
+                        >
+
+                        <div class="ticket-label">
+                            COMPROBANTE DE PAGO
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="scene-number">
+                    03 <span>/ 07</span>
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 ESCENA 4
+            ================================================== -->
+
+            <section class="scene scene-4" data-scene="4">
+
+                <div class="scene-content">
+
+                    <div class="eyebrow">
+                        UN PASO MÁS
+                    </div>
+
+                    <h2>
+                        Busca el
+                        <span>código QR.</span>
+                    </h2>
+
+                    <p>
+                        En tu ticket encontrarás
+                        un código QR que te permitirá
+                        consultar la información de tus pagos.
+                    </p>
+
+                    <div class="qr-wrapper">
+
+                        <div class="qr-pulse"></div>
+
+                        <div class="qr-frame">
+
+                            <img
+                                src="img/ticket_amaya.png"
+                                alt="Código QR del ticket"
+                            >
+
+                            <div class="qr-focus"></div>
+
+                            <div class="qr-corner top-left"></div>
+                            <div class="qr-corner top-right"></div>
+                            <div class="qr-corner bottom-left"></div>
+                            <div class="qr-corner bottom-right"></div>
+
+                            <div class="scan-line"></div>
+
+                        </div>
+
+                        <div class="qr-caption">
+                            ESCANEA PARA CONTINUAR
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="scene-number">
+                    04 <span>/ 07</span>
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 ESCENA 5
+            ================================================== -->
+
+            <section class="scene scene-5" data-scene="5">
+
+                <div class="scene-content">
+
+                    <div class="eyebrow">
+                        ACCESO INMEDIATO
+                    </div>
+
+                    <h2>
+                        Escanea el
+                        <span>código QR.</span>
+                    </h2>
+
+                    <p>
+                        Apunta la cámara de tu teléfono
+                        hacia el código QR y accede
+                        fácilmente a tu información.
+                    </p>
+
+                    <div class="phone-wrapper">
+
+                        <div class="phone-glow"></div>
+
+                        <div class="phone-frame">
+
+                            <div class="phone-speaker"></div>
+
+                            <img
+                                src="img/escaneo_qr.png"
+                                alt="Escaneo del código QR"
+                            >
+
+                            <div class="phone-scan"></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="scene-number">
+                    05 <span>/ 07</span>
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 ESCENA 6
+            ================================================== -->
+
+            <section class="scene scene-6" data-scene="6">
+
+                <div class="scene-content">
+
+                    <div class="eyebrow">
+                        INFORMACIÓN AL ALCANCE
+                    </div>
+
+                    <h2>
+                        Consulta tu
+                        <span>historial de pagos.</span>
+                    </h2>
+
+                    <p>
+                        Mantén el control de tu información
+                        de una manera clara, sencilla
+                        y transparente.
+                    </p>
+
+                    <div class="history-wrapper">
+
+                        <div class="history-glow"></div>
+
+                        <div class="history-frame">
+
+                            <img
+                                src="img/historial_pagos.png"
+                                alt="Historial de pagos"
+                            >
+
+                        </div>
+
+                        <div class="history-badge">
+                            <span class="check">✓</span>
+                            INFORMACIÓN DISPONIBLE
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="scene-number">
+                    06 <span>/ 07</span>
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 ESCENA 7
+            ================================================== -->
+
+            <section class="scene scene-7" data-scene="7">
+
+                <div class="final-glow"></div>
+
+                <div class="scene-content final-content">
+
+                    <div class="final-logo">
+
+                        <img
+                            src="img/logo_amaya.png"
+                            alt="Comercial Amaya"
+                        >
+
+                    </div>
+
+                    <div class="final-line"></div>
+
+                    <div class="final-small">
+                        COMERCIAL AMAYA
+                    </div>
+
+                    <h1>
+                        Más información.<br>
+                        <span>Más control.</span>
+                    </h1>
+
+                    <p>
+                        Seguimos evolucionando para brindarte
+                        una experiencia de pago más moderna,
+                        rápida y segura.
+                    </p>
+
+                    <div class="final-tagline">
+                        EVOLUCIONANDO CONTIGO
+                    </div>
+
+                </div>
+
+                <div class="scene-number">
+                    07 <span>/ 07</span>
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 BARRA DE PROGRESO
+            ================================================== -->
+
+            <div class="progress-container">
+
+                <div class="progress-track">
+                    <div id="progressBar" class="progress-bar"></div>
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 INDICADOR DE AUDIO
+            ================================================== -->
+
+            <div id="soundIndicator" class="sound-indicator">
+
+                <span class="sound-bars">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                </span>
+
+                <span>SONIDO ACTIVADO</span>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         AUDIO
+    ====================================================== -->
+
+    <audio
+        id="backgroundMusic"
+        src="audio/musica.mp3"
+        preload="auto"
+        loop
+    ></audio>
+
+    <audio
+        id="narration"
+        preload="auto"
+    ></audio>
+
+
+    <script src="js/video.js"></script>
+
+</body>
+</html>
