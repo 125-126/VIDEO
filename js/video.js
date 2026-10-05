@@ -1,7 +1,7 @@
+
 /* =========================================================
    COMERCIAL AMAYA
-   MOTOR DEL VIDEO
-   INICIO AUTOMÁTICO
+   MOTOR DEL VIDEO - AUDIO CORREGIDO
 ========================================================= */
 
 const scenes = document.querySelectorAll(".scene");
@@ -9,8 +9,10 @@ const progressBar = document.getElementById("progressBar");
 const currentScene = document.getElementById("currentScene");
 const soundButton = document.getElementById("soundButton");
 
-/* CONFIG */
 const SCENE_TIME = 7500;
+const MUSIC_VOLUME = 0.35;
+const NARRATION_VOLUME = 1.0;
+const MUSIC_DUCK_VOLUME = 0.10;
 
 let current = 0;
 let timer = null;
@@ -18,26 +20,13 @@ let progressTimer = null;
 let started = false;
 let muted = false;
 let finished = false;
-
-/* =========================================================
-   AUDIO
-========================================================= */
+let audioUnlocked = false;
+let pausedForVisibility = false;
 
 const music = new Audio("audio/musica.mp3");
-
 music.loop = true;
 music.preload = "auto";
-
-const MUSIC_VOLUME = 0.25;
-const MUSIC_DUCK_VOLUME = 0.07;
-const NARRATION_VOLUME = 0.95;
-
 music.volume = MUSIC_VOLUME;
-
-
-/* =========================================================
-   NARRACIONES
-========================================================= */
 
 const narrations = [
     null,
@@ -51,541 +40,324 @@ const narrations = [
 
 let narrationAudio = null;
 
-
 /* =========================================================
-   INICIAR AUTOMÁTICAMENTE
+   INICIO AUTOMÁTICO DEL VIDEO
 ========================================================= */
 
 window.addEventListener("load", () => {
-
     started = true;
-
     document.body.classList.add("recording");
 
-    /*
-     * Intentamos iniciar la música automáticamente.
-     * Algunos navegadores pueden bloquear audio
-     * hasta que exista interacción del usuario.
-     */
-    music.play().catch(() => {
-        console.log("El navegador bloqueó el audio automático.");
-    });
-
     playScene(0);
+
+    // El navegador podría bloquear este intento.
+    tryStartMusic();
 });
 
+/* =========================================================
+   INTENTAR ACTIVAR LA MÚSICA
+========================================================= */
+
+async function tryStartMusic() {
+    if (muted || document.hidden || finished) return;
+
+    try {
+        await music.play();
+        audioUnlocked = true;
+        updateSoundButton();
+    } catch (error) {
+        // Esperaremos al primer toque o clic del usuario.
+        console.log("Esperando interacción para activar el audio.");
+    }
+}
 
 /* =========================================================
-   PLAY SCENE
+   ACTIVAR AUDIO CON EL PRIMER TOQUE O CLIC
+   No aparece ninguna pantalla de inicio.
+========================================================= */
+
+async function unlockAudio() {
+    if (audioUnlocked || muted || finished) return;
+
+    try {
+        await music.play();
+        audioUnlocked = true;
+        updateSoundButton();
+    } catch (error) {
+        console.log("El navegador todavía bloquea el audio.");
+    }
+
+    if (
+        narrationAudio &&
+        narrationAudio.paused &&
+        !muted
+    ) {
+        narrationAudio.play().catch(() => {});
+    }
+}
+
+document.addEventListener("pointerdown", unlockAudio, {
+    passive: true
+});
+
+/* =========================================================
+   REPRODUCIR ESCENA
 ========================================================= */
 
 function playScene(index) {
-
-    if (index < 0 || index >= scenes.length) {
-        return;
-    }
-
-    if (finished) {
-        return;
-    }
+    if (finished || index < 0 || index >= scenes.length) return;
 
     clearTimeout(timer);
     clearInterval(progressTimer);
 
-
-    /* Detener narración anterior */
-
     if (narrationAudio) {
-
         narrationAudio.pause();
         narrationAudio.currentTime = 0;
         narrationAudio = null;
     }
 
-
-    /* Activar escena */
-
     scenes.forEach((scene, i) => {
-
-        scene.classList.toggle(
-            "active",
-            i === index
-        );
-
+        scene.classList.toggle("active", i === index);
     });
-
 
     current = index;
 
-
-    /* Número de escena */
-
-    currentScene.textContent =
-        String(index + 1).padStart(2, "0");
-
-
-    /* Barra de progreso */
+    if (currentScene) {
+        currentScene.textContent =
+            String(index + 1).padStart(2, "0");
+    }
 
     startProgress();
 
+    if (narrations[index]) {
+        narrationAudio = new Audio(narrations[index]);
+        narrationAudio.preload = "auto";
+        narrationAudio.volume = NARRATION_VOLUME;
 
-    /* Narración */
+        if (!muted && audioUnlocked) {
+            music.volume = MUSIC_DUCK_VOLUME;
 
-    if (narrations[index] && !muted) {
+            narrationAudio.play().catch(() => {
+                console.log("No se pudo iniciar la narración.");
+            });
+        }
 
-        narrationAudio =
-            new Audio(narrations[index]);
-
-        narrationAudio.volume =
-            NARRATION_VOLUME;
-
-        music.volume =
-            MUSIC_DUCK_VOLUME;
-
-
-        narrationAudio.play().catch(() => {});
-
-
-        narrationAudio.addEventListener(
-            "ended",
-            () => {
-
-                if (!muted) {
-                    music.volume =
-                        MUSIC_VOLUME;
-                }
-
+        narrationAudio.addEventListener("ended", () => {
+            if (!muted && !finished) {
+                music.volume = MUSIC_VOLUME;
             }
-        );
-
-    } else {
-
-        music.volume =
-            muted ? 0 : MUSIC_VOLUME;
+        });
     }
 
+    if (!muted && audioUnlocked) {
+        music.volume = MUSIC_VOLUME;
+        music.play().catch(() => {});
+    }
 
-    /* Tiempo de escena */
-
-    timer = setTimeout(() => {
-
-        nextScene();
-
-    }, SCENE_TIME);
+    timer = setTimeout(nextScene, SCENE_TIME);
 }
-
 
 /* =========================================================
    SIGUIENTE ESCENA
 ========================================================= */
 
 function nextScene() {
+    if (finished) return;
 
-    if (finished) {
-        return;
-    }
-
-    const next =
-        current + 1;
-
-
-    if (next >= scenes.length) {
-
+    if (current + 1 >= scenes.length) {
         finishVideo();
-
         return;
     }
 
-
-    playScene(next);
+    playScene(current + 1);
 }
 
-
 /* =========================================================
-   FINAL DEL VIDEO
+   FINAL: NO REPETIR EL VIDEO
 ========================================================= */
 
 function finishVideo() {
-
-    if (finished) {
-        return;
-    }
+    if (finished) return;
 
     finished = true;
-
 
     clearTimeout(timer);
     clearInterval(progressTimer);
 
-
-    /* Mantener la última escena */
-
     scenes.forEach((scene, i) => {
-
         scene.classList.toggle(
             "active",
             i === scenes.length - 1
         );
-
     });
 
+    current = scenes.length - 1;
 
-    current =
-        scenes.length - 1;
+    if (currentScene) {
+        currentScene.textContent =
+            String(scenes.length).padStart(2, "0");
+    }
 
+    if (progressBar) {
+        progressBar.style.width = "100%";
+    }
 
-    currentScene.textContent =
-        String(scenes.length).padStart(2, "0");
-
-
-    progressBar.style.width =
-        "100%";
-
-
-    document.body.classList.add(
-        "video-finished"
-    );
-
-
-    /* Detener narración */
+    document.body.classList.add("video-finished");
 
     if (narrationAudio) {
-
         narrationAudio.pause();
-        narrationAudio.currentTime = 0;
         narrationAudio = null;
     }
 
-
-    /* Mantener música suave */
-
-    if (!muted) {
-
-        music.volume =
-            MUSIC_VOLUME;
-    }
+    // La música termina junto con la presentación.
+    music.pause();
 }
-
 
 /* =========================================================
    ESCENA ANTERIOR
 ========================================================= */
 
 function previousScene() {
-
-    if (finished) {
-        return;
-    }
-
-    let previous =
-        current - 1;
-
-
-    if (previous < 0) {
-        previous = 0;
-    }
-
-
-    playScene(previous);
+    if (finished || current === 0) return;
+    playScene(current - 1);
 }
 
-
 /* =========================================================
-   PROGRESO
+   BARRA DE PROGRESO
 ========================================================= */
 
 function startProgress() {
-
     clearInterval(progressTimer);
 
+    const start = Date.now();
 
-    const start =
-        Date.now();
+    if (progressBar) {
+        progressBar.style.width = "0%";
+    }
 
+    progressTimer = setInterval(() => {
+        const elapsed = Date.now() - start;
+        const percent = Math.min(
+            (elapsed / SCENE_TIME) * 100,
+            100
+        );
 
-    progressBar.style.width =
-        "0%";
-
-
-    progressTimer =
-        setInterval(() => {
-
-            const elapsed =
-                Date.now() - start;
-
-
-            let percent =
-                (elapsed / SCENE_TIME) * 100;
-
-
-            if (percent > 100) {
-                percent = 100;
-            }
-
-
-            progressBar.style.width =
-                percent + "%";
-
-        }, 30);
+        if (progressBar) {
+            progressBar.style.width = percent + "%";
+        }
+    }, 50);
 }
-
 
 /* =========================================================
-   SONIDO
+   BOTÓN DE SONIDO, SI EXISTE EN EL HTML
 ========================================================= */
 
-if (soundButton) {
+function updateSoundButton() {
+    if (!soundButton) return;
 
-    soundButton.addEventListener(
-        "click",
-        (event) => {
-
-            event.stopPropagation();
-
-
-            muted = !muted;
-
-
-            if (muted) {
-
-                music.volume = 0;
-
-
-                if (narrationAudio) {
-                    narrationAudio.volume = 0;
-                }
-
-
-                soundButton.textContent =
-                    "🔇";
-
-            } else {
-
-                music.volume =
-                    MUSIC_VOLUME;
-
-
-                if (narrationAudio) {
-
-                    narrationAudio.volume =
-                        NARRATION_VOLUME;
-                }
-
-
-                soundButton.textContent =
-                    "🔊";
-
-
-                if (started && !finished) {
-
-                    music.play().catch(() => {});
-                }
-            }
-        }
-    );
+    soundButton.textContent = muted ? "🔇" : "🔊";
 }
 
+if (soundButton) {
+    soundButton.addEventListener("click", async (event) => {
+        event.stopPropagation();
+
+        muted = !muted;
+
+        if (muted) {
+            music.pause();
+
+            if (narrationAudio) {
+                narrationAudio.pause();
+            }
+        } else {
+            await tryStartMusic();
+
+            if (narrationAudio && audioUnlocked) {
+                narrationAudio.play().catch(() => {});
+            }
+        }
+
+        updateSoundButton();
+    });
+}
 
 /* =========================================================
    TECLADO
 ========================================================= */
 
-document.addEventListener(
-    "keydown",
-    (event) => {
+document.addEventListener("keydown", (event) => {
+    if (!started || finished) return;
 
-        if (!started) {
-            return;
-        }
+    if (event.key === "ArrowRight") nextScene();
+    if (event.key === "ArrowLeft") previousScene();
 
-        if (finished) {
-            return;
-        }
+    if (event.key === " ") {
+        event.preventDefault();
 
-
-        if (event.key === "ArrowRight") {
-
-            nextScene();
-        }
-
-
-        if (event.key === "ArrowLeft") {
-
-            previousScene();
-        }
-
-
-        if (event.key === " ") {
-
-            event.preventDefault();
-
-
-            if (music.paused) {
-
-                music.play().catch(() => {});
-
-            } else {
-
-                music.pause();
-            }
+        if (music.paused) {
+            unlockAudio();
+            tryStartMusic();
+        } else {
+            music.pause();
         }
     }
-);
-
+});
 
 /* =========================================================
-   TOUCH / SWIPE
+   DESLIZAR EN CELULAR
 ========================================================= */
 
 let touchStartX = 0;
-let touchEndX = 0;
 
+document.addEventListener("touchstart", (event) => {
+    if (!started || finished) return;
 
-document.addEventListener(
-    "touchstart",
-    (event) => {
+    touchStartX = event.changedTouches[0].screenX;
+}, { passive: true });
 
-        if (!started || finished) {
-            return;
-        }
-
-
-        touchStartX =
-            event.changedTouches[0].screenX;
-
-    },
-    { passive: true }
-);
-
-
-document.addEventListener(
-    "touchend",
-    (event) => {
-
-        if (!started || finished) {
-            return;
-        }
-
-
-        touchEndX =
-            event.changedTouches[0].screenX;
-
-
-        handleSwipe();
-
-    },
-    { passive: true }
-);
-
-
-function handleSwipe() {
-
-    if (finished) {
-        return;
-    }
-
+document.addEventListener("touchend", (event) => {
+    if (!started || finished) return;
 
     const difference =
-        touchStartX - touchEndX;
+        touchStartX - event.changedTouches[0].screenX;
 
-
-    if (difference > 60) {
-
-        nextScene();
-    }
-
-
-    if (difference < -60) {
-
-        previousScene();
-    }
-}
-
+    if (difference > 60) nextScene();
+    if (difference < -60) previousScene();
+}, { passive: true });
 
 /* =========================================================
-   PRELOAD IMÁGENES
+   PRE-CARGAR IMÁGENES
 ========================================================= */
 
-const imagePaths = [
-
+[
     "img/logo_amaya.png",
     "img/pos_amaya.png",
     "img/ticket_amaya.png",
     "img/escaneo_qr.png",
     "img/historial_pagos.png"
-
-];
-
-
-imagePaths.forEach((path) => {
-
-    const img =
-        new Image();
-
+].forEach((path) => {
+    const img = new Image();
     img.src = path;
 });
 
-
 /* =========================================================
-   PRELOAD AUDIO
+   PESTAÑA EN SEGUNDO PLANO
 ========================================================= */
 
-music.preload = "auto";
+document.addEventListener("visibilitychange", () => {
+    if (!started || finished) return;
 
+    if (document.hidden) {
+        pausedForVisibility = true;
+        clearTimeout(timer);
+        clearInterval(progressTimer);
+        music.pause();
 
-/* =========================================================
-   PREVENT ZOOM
-========================================================= */
-
-document.addEventListener(
-    "gesturestart",
-    (event) => {
-
-        event.preventDefault();
-
+        if (narrationAudio) narrationAudio.pause();
+    } else if (pausedForVisibility) {
+        pausedForVisibility = false;
+        playScene(current);
+        tryStartMusic();
     }
-);
-
-
-/* =========================================================
-   VISIBILITY
-========================================================= */
-
-document.addEventListener(
-    "visibilitychange",
-    () => {
-
-        if (!started) {
-            return;
-        }
-
-
-        if (document.hidden) {
-
-            clearTimeout(timer);
-            clearInterval(progressTimer);
-
-            music.pause();
-
-
-            if (narrationAudio) {
-                narrationAudio.pause();
-            }
-
-        } else {
-
-            if (finished) {
-                return;
-            }
-
-
-            if (!muted) {
-
-                music.play().catch(() => {});
-            }
-
-
-            playScene(current);
-        }
-    }
-);
+});
