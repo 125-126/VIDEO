@@ -45,7 +45,7 @@ const music = new Audio("audio/musica.mp3");
 
 music.loop = true;
 
-music.volume = 0.16;
+music.volume = 0.25;
 
 
 /*
@@ -161,20 +161,20 @@ function playScene(index) {
             Baja la música mientras habla
         */
 
-        music.volume = .05;
+        music.volume = .07;
 
         narrationAudio.addEventListener(
             "ended",
             () => {
 
-                music.volume = .16;
+                music.volume = .25;
 
             }
         );
 
     } else {
 
-        music.volume = .16;
+        music.volume = .25;
 
     }
 
@@ -196,10 +196,19 @@ function nextScene() {
 
     let next = current + 1;
 
+    // Cuando llegue a la última escena,
+    // SE DETIENE y permanece ahí.
     if (next >= scenes.length) {
 
-        next = 0;
+        clearTimeout(timer);
+        clearInterval(progressTimer);
 
+        progressBar.style.width = "100%";
+
+        currentScene.textContent =
+            String(scenes.length).padStart(2, "0");
+
+        return;
     }
 
     playScene(next);
