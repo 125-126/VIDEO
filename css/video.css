@@ -894,7 +894,7 @@ body {
     flex-shrink: 0;
 
     position: relative;
-    z-index: 10;
+    z-index: 20;
 }
 
 
@@ -909,12 +909,12 @@ body {
     width: 100%;
 
     /*
-     * Dejamos espacio real debajo
-     * del encabezado.
+     * MUCHO MÁS ESPACIO ENTRE EL TEXTO
+     * Y EL TICKET.
      */
-    margin-top: 8cqh;
+    margin-top: 14cqh;
 
-    height: 52cqh;
+    height: 50cqh;
 
     display: flex;
 
@@ -928,7 +928,7 @@ body {
 
 
 /* ---------------------------------------------------------
-   LUZ DEL TICKET
+   LUZ
 --------------------------------------------------------- */
 
 .scene-3 .ticket-backlight {
@@ -955,7 +955,7 @@ body {
 
 
 /* ---------------------------------------------------------
-   IMAGEN DEL TICKET
+   TICKET
 --------------------------------------------------------- */
 
 .scene-3 .ticket-image {
@@ -967,7 +967,7 @@ body {
     display: block;
 
     /*
-     * Ticket grande.
+     * LO MANTENEMOS GRANDE.
      */
     width: 58cqw;
 
@@ -975,21 +975,23 @@ body {
 
     height: auto;
 
-    max-height: 48cqh;
+    max-height: 46cqh;
 
     object-fit: contain;
 
     /*
-     * Lo bajamos ligeramente
-     * dentro de su composición.
+     * BAJAR EL TICKET.
+     *
+     * Antes: 2cqh
+     *
+     * Ahora: 9cqh
      */
-    transform: translateY(2cqh);
+    transform: translateY(9cqh);
 
     filter:
         drop-shadow(
             0 30px 45px rgba(0,0,0,.55)
         );
-
 }
 
 
@@ -1003,7 +1005,7 @@ body {
 
     right: 5cqw;
 
-    bottom: 2cqh;
+    bottom: -2cqh;
 
     z-index: 6;
 
@@ -1086,7 +1088,7 @@ body {
 
     z-index: 8;
 
-    margin-top: 2cqh;
+    margin-top: 5cqh;
 
     display: flex;
 
