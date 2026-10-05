@@ -1,34 +1,74 @@
-
 /* =========================================================
    COMERCIAL AMAYA
-   MOTOR DEL VIDEO - AUDIO CORREGIDO
+   MOTOR DEL VIDEO
+   INICIO CON BOTÓN + AUDIO
 ========================================================= */
 
 const scenes = document.querySelectorAll(".scene");
-const progressBar = document.getElementById("progressBar");
-const currentScene = document.getElementById("currentScene");
-const soundButton = document.getElementById("soundButton");
+
+const progressBar =
+    document.getElementById("progressBar");
+
+const currentScene =
+    document.getElementById("currentScene");
+
+const soundButton =
+    document.getElementById("soundButton");
+
+const startScreen =
+    document.getElementById("startScreen");
+
+const startButton =
+    document.getElementById("startButton");
+
+
+/* =========================================================
+   CONFIGURACIÓN
+========================================================= */
 
 const SCENE_TIME = 7500;
+
 const MUSIC_VOLUME = 0.35;
-const NARRATION_VOLUME = 1.0;
+
 const MUSIC_DUCK_VOLUME = 0.10;
 
-let current = 0;
-let timer = null;
-let progressTimer = null;
-let started = false;
-let muted = false;
-let finished = false;
-let audioUnlocked = false;
-let pausedForVisibility = false;
+const NARRATION_VOLUME = 1.0;
 
-const music = new Audio("audio/musica.mp3");
+
+let current = 0;
+
+let timer = null;
+
+let progressTimer = null;
+
+let started = false;
+
+let muted = false;
+
+let finished = false;
+
+
+/* =========================================================
+   AUDIO PRINCIPAL
+========================================================= */
+
+const music =
+    new Audio("audio/musica.mp3");
+
 music.loop = true;
+
 music.preload = "auto";
-music.volume = MUSIC_VOLUME;
+
+music.volume =
+    MUSIC_VOLUME;
+
+
+/* =========================================================
+   NARRACIONES
+========================================================= */
 
 const narrations = [
+
     null,
     null,
     null,
@@ -36,328 +76,924 @@ const narrations = [
     null,
     null,
     null
+
 ];
+
 
 let narrationAudio = null;
 
-/* =========================================================
-   INICIO AUTOMÁTICO DEL VIDEO
-========================================================= */
-
-window.addEventListener("load", () => {
-    started = true;
-    document.body.classList.add("recording");
-
-    playScene(0);
-
-    // El navegador podría bloquear este intento.
-    tryStartMusic();
-});
 
 /* =========================================================
-   INTENTAR ACTIVAR LA MÚSICA
+   BOTÓN DE INICIO
 ========================================================= */
 
-async function tryStartMusic() {
-    if (muted || document.hidden || finished) return;
+if (startButton) {
 
-    try {
-        await music.play();
-        audioUnlocked = true;
-        updateSoundButton();
-    } catch (error) {
-        // Esperaremos al primer toque o clic del usuario.
-        console.log("Esperando interacción para activar el audio.");
-    }
+    startButton.addEventListener(
+        "click",
+        () => {
+
+            if (started) {
+                return;
+            }
+
+
+            started = true;
+
+
+            /*
+             * Ocultar pantalla inicial.
+             */
+
+            if (startScreen) {
+
+                startScreen.classList.add(
+                    "hidden"
+                );
+
+            }
+
+
+            /*
+             * Ocultar controles
+             * durante el video.
+             */
+
+            document.body.classList.add(
+                "recording"
+            );
+
+
+            /*
+             * Configurar volumen.
+             */
+
+            music.volume =
+                muted
+                    ? 0
+                    : MUSIC_VOLUME;
+
+
+            /*
+             * Reproducir música.
+             *
+             * Como esto ocurre después
+             * del clic del usuario,
+             * el navegador permite el audio.
+             */
+
+            music.play().catch(
+                (error) => {
+
+                    console.log(
+                        "No se pudo reproducir la música:",
+                        error
+                    );
+
+                }
+            );
+
+
+            /*
+             * Comenzar escena 1.
+             */
+
+            playScene(0);
+
+        }
+    );
+
 }
 
-/* =========================================================
-   ACTIVAR AUDIO CON EL PRIMER TOQUE O CLIC
-   No aparece ninguna pantalla de inicio.
-========================================================= */
-
-async function unlockAudio() {
-    if (audioUnlocked || muted || finished) return;
-
-    try {
-        await music.play();
-        audioUnlocked = true;
-        updateSoundButton();
-    } catch (error) {
-        console.log("El navegador todavía bloquea el audio.");
-    }
-
-    if (
-        narrationAudio &&
-        narrationAudio.paused &&
-        !muted
-    ) {
-        narrationAudio.play().catch(() => {});
-    }
-}
-
-document.addEventListener("pointerdown", unlockAudio, {
-    passive: true
-});
 
 /* =========================================================
    REPRODUCIR ESCENA
 ========================================================= */
 
 function playScene(index) {
-    if (finished || index < 0 || index >= scenes.length) return;
 
-    clearTimeout(timer);
-    clearInterval(progressTimer);
+    if (
+        finished ||
+        index < 0 ||
+        index >= scenes.length
+    ) {
 
-    if (narrationAudio) {
-        narrationAudio.pause();
-        narrationAudio.currentTime = 0;
-        narrationAudio = null;
+        return;
+
     }
 
-    scenes.forEach((scene, i) => {
-        scene.classList.toggle("active", i === index);
-    });
+
+    /*
+     * Limpiar temporizadores anteriores.
+     */
+
+    clearTimeout(timer);
+
+    clearInterval(progressTimer);
+
+
+    /*
+     * Detener narración anterior.
+     */
+
+    if (narrationAudio) {
+
+        narrationAudio.pause();
+
+        narrationAudio.currentTime = 0;
+
+        narrationAudio = null;
+
+    }
+
+
+    /*
+     * Activar solamente la escena actual.
+     */
+
+    scenes.forEach(
+        (scene, i) => {
+
+            scene.classList.toggle(
+                "active",
+                i === index
+            );
+
+        }
+    );
+
 
     current = index;
 
+
+    /* =====================================================
+       CONTADOR
+    ===================================================== */
+
     if (currentScene) {
+
         currentScene.textContent =
-            String(index + 1).padStart(2, "0");
+            String(index + 1)
+                .padStart(2, "0");
+
     }
+
+
+    /* =====================================================
+       PROGRESO
+    ===================================================== */
 
     startProgress();
 
-    if (narrations[index]) {
-        narrationAudio = new Audio(narrations[index]);
-        narrationAudio.preload = "auto";
-        narrationAudio.volume = NARRATION_VOLUME;
 
-        if (!muted && audioUnlocked) {
-            music.volume = MUSIC_DUCK_VOLUME;
+    /* =====================================================
+       NARRACIÓN
+    ===================================================== */
 
-            narrationAudio.play().catch(() => {
-                console.log("No se pudo iniciar la narración.");
-            });
-        }
+    if (
+        narrations[index] &&
+        !muted
+    ) {
 
-        narrationAudio.addEventListener("ended", () => {
-            if (!muted && !finished) {
-                music.volume = MUSIC_VOLUME;
+        narrationAudio =
+            new Audio(
+                narrations[index]
+            );
+
+
+        narrationAudio.preload =
+            "auto";
+
+
+        narrationAudio.volume =
+            NARRATION_VOLUME;
+
+
+        /*
+         * Bajar música mientras
+         * se reproduce la narración.
+         */
+
+        music.volume =
+            MUSIC_DUCK_VOLUME;
+
+
+        narrationAudio
+            .play()
+            .catch(
+                () => {}
+            );
+
+
+        narrationAudio.addEventListener(
+            "ended",
+            () => {
+
+                if (
+                    !muted &&
+                    !finished
+                ) {
+
+                    music.volume =
+                        MUSIC_VOLUME;
+
+                }
+
             }
-        });
+        );
+
+    } else {
+
+        /*
+         * Música normal.
+         */
+
+        music.volume =
+            muted
+                ? 0
+                : MUSIC_VOLUME;
+
     }
 
-    if (!muted && audioUnlocked) {
-        music.volume = MUSIC_VOLUME;
-        music.play().catch(() => {});
+
+    /* =====================================================
+       ASEGURAR MÚSICA
+    ===================================================== */
+
+    if (
+        !muted &&
+        music.paused
+    ) {
+
+        music
+            .play()
+            .catch(
+                () => {}
+            );
+
     }
 
-    timer = setTimeout(nextScene, SCENE_TIME);
+
+    /* =====================================================
+       TIEMPO DE ESCENA
+    ===================================================== */
+
+    timer =
+        setTimeout(
+            () => {
+
+                nextScene();
+
+            },
+            SCENE_TIME
+        );
+
 }
+
 
 /* =========================================================
    SIGUIENTE ESCENA
 ========================================================= */
 
 function nextScene() {
-    if (finished) return;
 
-    if (current + 1 >= scenes.length) {
-        finishVideo();
+    if (finished) {
         return;
     }
 
-    playScene(current + 1);
+
+    const next =
+        current + 1;
+
+
+    if (
+        next >= scenes.length
+    ) {
+
+        finishVideo();
+
+        return;
+
+    }
+
+
+    playScene(next);
+
 }
 
+
 /* =========================================================
-   FINAL: NO REPETIR EL VIDEO
+   FINAL DEL VIDEO
+   NO REPETIR
 ========================================================= */
 
 function finishVideo() {
-    if (finished) return;
+
+    if (finished) {
+        return;
+    }
+
 
     finished = true;
 
+
+    /*
+     * Detener temporizadores.
+     */
+
     clearTimeout(timer);
+
     clearInterval(progressTimer);
 
-    scenes.forEach((scene, i) => {
-        scene.classList.toggle(
-            "active",
-            i === scenes.length - 1
-        );
-    });
 
-    current = scenes.length - 1;
+    /*
+     * Mantener visible la última escena.
+     */
+
+    scenes.forEach(
+        (scene, i) => {
+
+            scene.classList.toggle(
+                "active",
+                i === scenes.length - 1
+            );
+
+        }
+    );
+
+
+    current =
+        scenes.length - 1;
+
+
+    /*
+     * Contador final.
+     */
 
     if (currentScene) {
+
         currentScene.textContent =
-            String(scenes.length).padStart(2, "0");
+            String(scenes.length)
+                .padStart(2, "0");
+
     }
+
+
+    /*
+     * Completar barra.
+     */
 
     if (progressBar) {
-        progressBar.style.width = "100%";
+
+        progressBar.style.width =
+            "100%";
+
     }
 
-    document.body.classList.add("video-finished");
+
+    /*
+     * Marcar video terminado.
+     */
+
+    document.body.classList.add(
+        "video-finished"
+    );
+
+
+    /*
+     * Detener narración.
+     */
 
     if (narrationAudio) {
+
         narrationAudio.pause();
+
+        narrationAudio.currentTime = 0;
+
         narrationAudio = null;
+
     }
 
-    // La música termina junto con la presentación.
+
+    /*
+     * DETENER MÚSICA.
+     *
+     * El video NO vuelve a empezar.
+     */
+
     music.pause();
+
+    music.currentTime = 0;
+
 }
+
 
 /* =========================================================
    ESCENA ANTERIOR
 ========================================================= */
 
 function previousScene() {
-    if (finished || current === 0) return;
-    playScene(current - 1);
+
+    if (
+        finished ||
+        current === 0
+    ) {
+
+        return;
+
+    }
+
+
+    playScene(
+        current - 1
+    );
+
 }
+
 
 /* =========================================================
    BARRA DE PROGRESO
 ========================================================= */
 
 function startProgress() {
-    clearInterval(progressTimer);
 
-    const start = Date.now();
+    clearInterval(
+        progressTimer
+    );
+
+
+    const start =
+        Date.now();
+
 
     if (progressBar) {
-        progressBar.style.width = "0%";
+
+        progressBar.style.width =
+            "0%";
+
     }
 
-    progressTimer = setInterval(() => {
-        const elapsed = Date.now() - start;
-        const percent = Math.min(
-            (elapsed / SCENE_TIME) * 100,
-            100
+
+    progressTimer =
+        setInterval(
+            () => {
+
+                const elapsed =
+                    Date.now() - start;
+
+
+                const percent =
+                    Math.min(
+                        (
+                            elapsed /
+                            SCENE_TIME
+                        ) * 100,
+                        100
+                    );
+
+
+                if (progressBar) {
+
+                    progressBar.style.width =
+                        percent + "%";
+
+                }
+
+            },
+            30
         );
 
-        if (progressBar) {
-            progressBar.style.width = percent + "%";
-        }
-    }, 50);
 }
 
+
 /* =========================================================
-   BOTÓN DE SONIDO, SI EXISTE EN EL HTML
+   BOTÓN DE SONIDO
 ========================================================= */
 
 function updateSoundButton() {
-    if (!soundButton) return;
 
-    soundButton.textContent = muted ? "🔇" : "🔊";
+    if (!soundButton) {
+        return;
+    }
+
+
+    soundButton.textContent =
+        muted
+            ? "🔇"
+            : "🔊";
+
 }
+
 
 if (soundButton) {
-    soundButton.addEventListener("click", async (event) => {
-        event.stopPropagation();
 
-        muted = !muted;
+    soundButton.addEventListener(
+        "click",
+        (event) => {
 
-        if (muted) {
-            music.pause();
+            event.stopPropagation();
 
-            if (narrationAudio) {
-                narrationAudio.pause();
+
+            muted =
+                !muted;
+
+
+            if (muted) {
+
+                /*
+                 * Silenciar música.
+                 */
+
+                music.volume = 0;
+
+
+                /*
+                 * Silenciar narración.
+                 */
+
+                if (narrationAudio) {
+
+                    narrationAudio.volume =
+                        0;
+
+                }
+
+            } else {
+
+                /*
+                 * Restaurar música.
+                 */
+
+                music.volume =
+                    MUSIC_VOLUME;
+
+
+                /*
+                 * Restaurar narración.
+                 */
+
+                if (narrationAudio) {
+
+                    narrationAudio.volume =
+                        NARRATION_VOLUME;
+
+                }
+
+
+                /*
+                 * Continuar música.
+                 */
+
+                if (
+                    started &&
+                    !finished
+                ) {
+
+                    music
+                        .play()
+                        .catch(
+                            () => {}
+                        );
+
+                }
+
             }
-        } else {
-            await tryStartMusic();
 
-            if (narrationAudio && audioUnlocked) {
-                narrationAudio.play().catch(() => {});
-            }
+
+            updateSoundButton();
+
         }
+    );
 
-        updateSoundButton();
-    });
 }
+
 
 /* =========================================================
    TECLADO
 ========================================================= */
 
-document.addEventListener("keydown", (event) => {
-    if (!started || finished) return;
+document.addEventListener(
+    "keydown",
+    (event) => {
 
-    if (event.key === "ArrowRight") nextScene();
-    if (event.key === "ArrowLeft") previousScene();
+        if (
+            !started ||
+            finished
+        ) {
 
-    if (event.key === " ") {
-        event.preventDefault();
+            return;
 
-        if (music.paused) {
-            unlockAudio();
-            tryStartMusic();
-        } else {
-            music.pause();
         }
+
+
+        /*
+         * SIGUIENTE
+         */
+
+        if (
+            event.key ===
+            "ArrowRight"
+        ) {
+
+            nextScene();
+
+        }
+
+
+        /*
+         * ANTERIOR
+         */
+
+        if (
+            event.key ===
+            "ArrowLeft"
+        ) {
+
+            previousScene();
+
+        }
+
+
+        /*
+         * ESPACIO = PAUSAR / CONTINUAR MÚSICA
+         */
+
+        if (
+            event.key === " "
+        ) {
+
+            event.preventDefault();
+
+
+            if (
+                music.paused
+            ) {
+
+                music
+                    .play()
+                    .catch(
+                        () => {}
+                    );
+
+            } else {
+
+                music.pause();
+
+            }
+
+        }
+
     }
-});
+);
+
 
 /* =========================================================
-   DESLIZAR EN CELULAR
+   TOUCH / SWIPE
 ========================================================= */
 
 let touchStartX = 0;
 
-document.addEventListener("touchstart", (event) => {
-    if (!started || finished) return;
+let touchEndX = 0;
 
-    touchStartX = event.changedTouches[0].screenX;
-}, { passive: true });
 
-document.addEventListener("touchend", (event) => {
-    if (!started || finished) return;
+document.addEventListener(
+    "touchstart",
+    (event) => {
+
+        if (
+            !started ||
+            finished
+        ) {
+
+            return;
+
+        }
+
+
+        touchStartX =
+            event
+                .changedTouches[0]
+                .screenX;
+
+    },
+    {
+        passive: true
+    }
+);
+
+
+document.addEventListener(
+    "touchend",
+    (event) => {
+
+        if (
+            !started ||
+            finished
+        ) {
+
+            return;
+
+        }
+
+
+        touchEndX =
+            event
+                .changedTouches[0]
+                .screenX;
+
+
+        handleSwipe();
+
+    },
+    {
+        passive: true
+    }
+);
+
+
+function handleSwipe() {
+
+    if (finished) {
+        return;
+    }
+
 
     const difference =
-        touchStartX - event.changedTouches[0].screenX;
+        touchStartX -
+        touchEndX;
 
-    if (difference > 60) nextScene();
-    if (difference < -60) previousScene();
-}, { passive: true });
+
+    /*
+     * Deslizar hacia la izquierda
+     * = siguiente.
+     */
+
+    if (
+        difference > 60
+    ) {
+
+        nextScene();
+
+    }
+
+
+    /*
+     * Deslizar hacia la derecha
+     * = anterior.
+     */
+
+    if (
+        difference < -60
+    ) {
+
+        previousScene();
+
+    }
+
+}
+
 
 /* =========================================================
    PRE-CARGAR IMÁGENES
 ========================================================= */
 
-[
-    "img/logo_amaya.png",
+const imagePaths = [
+
+    "img/logo_amaya.jpeg",
+
     "img/pos_amaya.png",
+
     "img/ticket_amaya.png",
+
     "img/escaneo_qr.png",
+
     "img/historial_pagos.png"
-].forEach((path) => {
-    const img = new Image();
-    img.src = path;
-});
+
+];
+
+
+imagePaths.forEach(
+    (path) => {
+
+        const img =
+            new Image();
+
+        img.src = path;
+
+    }
+);
+
 
 /* =========================================================
-   PESTAÑA EN SEGUNDO PLANO
+   PRE-CARGAR AUDIO
 ========================================================= */
 
-document.addEventListener("visibilitychange", () => {
-    if (!started || finished) return;
+music.preload =
+    "auto";
 
-    if (document.hidden) {
-        pausedForVisibility = true;
-        clearTimeout(timer);
-        clearInterval(progressTimer);
-        music.pause();
 
-        if (narrationAudio) narrationAudio.pause();
-    } else if (pausedForVisibility) {
-        pausedForVisibility = false;
-        playScene(current);
-        tryStartMusic();
+/* =========================================================
+   VISIBILITY
+   Si se cambia de pestaña, pausamos.
+========================================================= */
+
+document.addEventListener(
+    "visibilitychange",
+    () => {
+
+        if (
+            !started ||
+            finished
+        ) {
+
+            return;
+
+        }
+
+
+        if (
+            document.hidden
+        ) {
+
+            /*
+             * Pausar temporizadores.
+             */
+
+            clearTimeout(timer);
+
+            clearInterval(
+                progressTimer
+            );
+
+
+            /*
+             * Pausar música.
+             */
+
+            music.pause();
+
+
+            /*
+             * Pausar narración.
+             */
+
+            if (narrationAudio) {
+
+                narrationAudio.pause();
+
+            }
+
+        } else {
+
+            /*
+             * Regresar a la pestaña.
+             */
+
+            if (finished) {
+                return;
+            }
+
+
+            /*
+             * Continuar música.
+             */
+
+            if (!muted) {
+
+                music
+                    .play()
+                    .catch(
+                        () => {}
+                    );
+
+            }
+
+
+            /*
+             * Continuar escena actual.
+             */
+
+            playScene(current);
+
+        }
+
     }
-});
+);
+
+
+/* =========================================================
+   ESTADO INICIAL
+========================================================= */
+
+/*
+ * El video NO comienza automáticamente.
+ *
+ * Espera a que el usuario pulse:
+ *
+ * ▶ REPRODUCIR VIDEO
+ *
+ * Esto permite que la música
+ * pueda comenzar correctamente.
+ */
+
+updateSoundButton();
