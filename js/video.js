@@ -1,10 +1,22 @@
 /* =========================================================
    COMERCIAL AMAYA
-   MOTOR DEL VIDEO
-   INICIO CON BOTÓN + AUDIO
+   VIDEO CORPORATIVO
+   MOTOR PRINCIPAL
 ========================================================= */
 
-const scenes = document.querySelectorAll(".scene");
+
+/* =========================================================
+   ELEMENTOS
+========================================================= */
+
+const scenes =
+    document.querySelectorAll(".scene");
+
+const startScreen =
+    document.getElementById("startScreen");
+
+const startButton =
+    document.getElementById("startButton");
 
 const progressBar =
     document.getElementById("progressBar");
@@ -15,49 +27,56 @@ const currentScene =
 const soundButton =
     document.getElementById("soundButton");
 
-const startScreen =
-    document.getElementById("startScreen");
-
-const startButton =
-    document.getElementById("startButton");
-
 
 /* =========================================================
    CONFIGURACIÓN
 ========================================================= */
 
-const SCENE_TIME = 7500;
+const SCENE_TIME =
+    7000;
 
-const MUSIC_VOLUME = 0.35;
-
-const MUSIC_DUCK_VOLUME = 0.10;
-
-const NARRATION_VOLUME = 1.0;
-
-
-let current = 0;
-
-let timer = null;
-
-let progressTimer = null;
-
-let started = false;
-
-let muted = false;
-
-let finished = false;
+const MUSIC_VOLUME =
+    0.35;
 
 
 /* =========================================================
-   AUDIO PRINCIPAL
+   ESTADO
+========================================================= */
+
+let current =
+    0;
+
+let timer =
+    null;
+
+let progressTimer =
+    null;
+
+let started =
+    false;
+
+let muted =
+    false;
+
+let finished =
+    false;
+
+let pausedByVisibility =
+    false;
+
+
+/* =========================================================
+   MÚSICA
 ========================================================= */
 
 const music =
     new Audio("audio/musica.mp3");
 
-music.loop = true;
+music.preload =
+    "auto";
 
-music.preload = "auto";
+music.loop =
+    true;
 
 music.volume =
     MUSIC_VOLUME;
@@ -66,6 +85,16 @@ music.volume =
 /* =========================================================
    NARRACIONES
 ========================================================= */
+
+/*
+ * Más adelante podemos agregar narración.
+ *
+ * Ejemplo:
+ *
+ * "audio/escena1.mp3"
+ *
+ * Por ahora están vacías.
+ */
 
 const narrations = [
 
@@ -79,89 +108,98 @@ const narrations = [
 
 ];
 
-
-let narrationAudio = null;
+let narrationAudio =
+    null;
 
 
 /* =========================================================
-   BOTÓN DE INICIO
+   INICIO DEL VIDEO
 ========================================================= */
 
 if (startButton) {
 
     startButton.addEventListener(
         "click",
-        () => {
+        startVideo
+    );
 
-            if (started) {
-                return;
-            }
-
-
-            started = true;
+}
 
 
-            /*
-             * Ocultar pantalla inicial.
-             */
+/* =========================================================
+   FUNCIÓN PRINCIPAL DE INICIO
+========================================================= */
 
-            if (startScreen) {
+function startVideo() {
 
-                startScreen.classList.add(
-                    "hidden"
+    if (started) {
+
+        return;
+
+    }
+
+
+    started =
+        true;
+
+
+    finished =
+        false;
+
+
+    /*
+     * Ocultar pantalla inicial.
+     */
+
+    if (startScreen) {
+
+        startScreen.classList.add(
+            "hidden"
+        );
+
+    }
+
+
+    /*
+     * Modo limpio para grabación.
+     */
+
+    document.body.classList.add(
+        "recording"
+    );
+
+
+    /*
+     * Comenzar música.
+     */
+
+    if (!muted) {
+
+        music.volume =
+            MUSIC_VOLUME;
+
+        music.currentTime =
+            0;
+
+        music.play().catch(
+            error => {
+
+                console.log(
+                    "No se pudo reproducir la música:",
+                    error
                 );
 
             }
+        );
+
+    }
 
 
-            /*
-             * Ocultar controles
-             * durante el video.
-             */
+    /*
+     * Comenzar desde escena 1.
+     */
 
-            document.body.classList.add(
-                "recording"
-            );
-
-
-            /*
-             * Configurar volumen.
-             */
-
-            music.volume =
-                muted
-                    ? 0
-                    : MUSIC_VOLUME;
-
-
-            /*
-             * Reproducir música.
-             *
-             * Como esto ocurre después
-             * del clic del usuario,
-             * el navegador permite el audio.
-             */
-
-            music.play().catch(
-                (error) => {
-
-                    console.log(
-                        "No se pudo reproducir la música:",
-                        error
-                    );
-
-                }
-            );
-
-
-            /*
-             * Comenzar escena 1.
-             */
-
-            playScene(0);
-
-        }
-    );
+    playScene(0);
 
 }
 
@@ -172,8 +210,14 @@ if (startButton) {
 
 function playScene(index) {
 
+    if (finished) {
+
+        return;
+
+    }
+
+
     if (
-        finished ||
         index < 0 ||
         index >= scenes.length
     ) {
@@ -184,7 +228,7 @@ function playScene(index) {
 
 
     /*
-     * Limpiar temporizadores anteriores.
+     * Limpiar temporizadores.
      */
 
     clearTimeout(timer);
@@ -196,19 +240,11 @@ function playScene(index) {
      * Detener narración anterior.
      */
 
-    if (narrationAudio) {
-
-        narrationAudio.pause();
-
-        narrationAudio.currentTime = 0;
-
-        narrationAudio = null;
-
-    }
+    stopNarration();
 
 
     /*
-     * Activar solamente la escena actual.
+     * Activar escena.
      */
 
     scenes.forEach(
@@ -223,12 +259,13 @@ function playScene(index) {
     );
 
 
-    current = index;
+    current =
+        index;
 
 
-    /* =====================================================
-       CONTADOR
-    ===================================================== */
+    /*
+     * Actualizar contador.
+     */
 
     if (currentScene) {
 
@@ -239,112 +276,43 @@ function playScene(index) {
     }
 
 
-    /* =====================================================
-       PROGRESO
-    ===================================================== */
+    /*
+     * Reiniciar progreso.
+     */
 
     startProgress();
 
 
-    /* =====================================================
-       NARRACIÓN
-    ===================================================== */
+    /*
+     * Narración.
+     */
 
-    if (
-        narrations[index] &&
-        !muted
-    ) {
-
-        narrationAudio =
-            new Audio(
-                narrations[index]
-            );
+    playNarration(index);
 
 
-        narrationAudio.preload =
-            "auto";
-
-
-        narrationAudio.volume =
-            NARRATION_VOLUME;
-
-
-        /*
-         * Bajar música mientras
-         * se reproduce la narración.
-         */
-
-        music.volume =
-            MUSIC_DUCK_VOLUME;
-
-
-        narrationAudio
-            .play()
-            .catch(
-                () => {}
-            );
-
-
-        narrationAudio.addEventListener(
-            "ended",
-            () => {
-
-                if (
-                    !muted &&
-                    !finished
-                ) {
-
-                    music.volume =
-                        MUSIC_VOLUME;
-
-                }
-
-            }
-        );
-
-    } else {
-
-        /*
-         * Música normal.
-         */
-
-        music.volume =
-            muted
-                ? 0
-                : MUSIC_VOLUME;
-
-    }
-
-
-    /* =====================================================
-       ASEGURAR MÚSICA
-    ===================================================== */
+    /*
+     * Música.
+     */
 
     if (
         !muted &&
         music.paused
     ) {
 
-        music
-            .play()
-            .catch(
-                () => {}
-            );
+        music.play().catch(
+            () => {}
+        );
 
     }
 
 
-    /* =====================================================
-       TIEMPO DE ESCENA
-    ===================================================== */
+    /*
+     * Programar siguiente escena.
+     */
 
     timer =
         setTimeout(
-            () => {
-
-                nextScene();
-
-            },
+            nextScene,
             SCENE_TIME
         );
 
@@ -358,7 +326,9 @@ function playScene(index) {
 function nextScene() {
 
     if (finished) {
+
         return;
+
     }
 
 
@@ -383,120 +353,15 @@ function nextScene() {
 
 
 /* =========================================================
-   FINAL DEL VIDEO
-   NO REPETIR
-========================================================= */
-
-function finishVideo() {
-
-    if (finished) {
-        return;
-    }
-
-
-    finished = true;
-
-
-    /*
-     * Detener temporizadores.
-     */
-
-    clearTimeout(timer);
-
-    clearInterval(progressTimer);
-
-
-    /*
-     * Mantener visible la última escena.
-     */
-
-    scenes.forEach(
-        (scene, i) => {
-
-            scene.classList.toggle(
-                "active",
-                i === scenes.length - 1
-            );
-
-        }
-    );
-
-
-    current =
-        scenes.length - 1;
-
-
-    /*
-     * Contador final.
-     */
-
-    if (currentScene) {
-
-        currentScene.textContent =
-            String(scenes.length)
-                .padStart(2, "0");
-
-    }
-
-
-    /*
-     * Completar barra.
-     */
-
-    if (progressBar) {
-
-        progressBar.style.width =
-            "100%";
-
-    }
-
-
-    /*
-     * Marcar video terminado.
-     */
-
-    document.body.classList.add(
-        "video-finished"
-    );
-
-
-    /*
-     * Detener narración.
-     */
-
-    if (narrationAudio) {
-
-        narrationAudio.pause();
-
-        narrationAudio.currentTime = 0;
-
-        narrationAudio = null;
-
-    }
-
-
-    /*
-     * DETENER MÚSICA.
-     *
-     * El video NO vuelve a empezar.
-     */
-
-    music.pause();
-
-    music.currentTime = 0;
-
-}
-
-
-/* =========================================================
    ESCENA ANTERIOR
 ========================================================= */
 
 function previousScene() {
 
     if (
+        !started ||
         finished ||
-        current === 0
+        current <= 0
     ) {
 
         return;
@@ -512,7 +377,90 @@ function previousScene() {
 
 
 /* =========================================================
-   BARRA DE PROGRESO
+   FINAL
+========================================================= */
+
+function finishVideo() {
+
+    if (finished) {
+
+        return;
+
+    }
+
+
+    finished =
+        true;
+
+
+    clearTimeout(timer);
+
+    clearInterval(progressTimer);
+
+
+    /*
+     * Mostrar última escena.
+     */
+
+    scenes.forEach(
+        (scene, index) => {
+
+            scene.classList.toggle(
+                "active",
+                index === scenes.length - 1
+            );
+
+        }
+    );
+
+
+    current =
+        scenes.length - 1;
+
+
+    /*
+     * Contador.
+     */
+
+    if (currentScene) {
+
+        currentScene.textContent =
+            String(scenes.length)
+                .padStart(2, "0");
+
+    }
+
+
+    /*
+     * Detener narración.
+     */
+
+    stopNarration();
+
+
+    /*
+     * Detener música.
+     */
+
+    music.pause();
+
+    music.currentTime =
+        0;
+
+
+    /*
+     * Estado final.
+     */
+
+    document.body.classList.add(
+        "video-finished"
+    );
+
+}
+
+
+/* =========================================================
+   PROGRESO
 ========================================================= */
 
 function startProgress() {
@@ -520,10 +468,6 @@ function startProgress() {
     clearInterval(
         progressTimer
     );
-
-
-    const start =
-        Date.now();
 
 
     if (progressBar) {
@@ -534,15 +478,19 @@ function startProgress() {
     }
 
 
+    const startTime =
+        Date.now();
+
+
     progressTimer =
         setInterval(
             () => {
 
                 const elapsed =
-                    Date.now() - start;
+                    Date.now() - startTime;
 
 
-                const percent =
+                const percentage =
                     Math.min(
                         (
                             elapsed /
@@ -555,7 +503,7 @@ function startProgress() {
                 if (progressBar) {
 
                     progressBar.style.width =
-                        percent + "%";
+                        percentage + "%";
 
                 }
 
@@ -567,13 +515,73 @@ function startProgress() {
 
 
 /* =========================================================
-   BOTÓN DE SONIDO
+   NARRACIÓN
+========================================================= */
+
+function playNarration(index) {
+
+    const narration =
+        narrations[index];
+
+
+    if (
+        !narration ||
+        muted
+    ) {
+
+        return;
+
+    }
+
+
+    narrationAudio =
+        new Audio(narration);
+
+
+    narrationAudio.preload =
+        "auto";
+
+    narrationAudio.volume =
+        1;
+
+
+    narrationAudio.play().catch(
+        () => {}
+    );
+
+}
+
+
+function stopNarration() {
+
+    if (!narrationAudio) {
+
+        return;
+
+    }
+
+
+    narrationAudio.pause();
+
+    narrationAudio.currentTime =
+        0;
+
+    narrationAudio =
+        null;
+
+}
+
+
+/* =========================================================
+   SONIDO
 ========================================================= */
 
 function updateSoundButton() {
 
     if (!soundButton) {
+
         return;
+
     }
 
 
@@ -589,7 +597,7 @@ if (soundButton) {
 
     soundButton.addEventListener(
         "click",
-        (event) => {
+        event => {
 
             event.stopPropagation();
 
@@ -600,16 +608,9 @@ if (soundButton) {
 
             if (muted) {
 
-                /*
-                 * Silenciar música.
-                 */
+                music.volume =
+                    0;
 
-                music.volume = 0;
-
-
-                /*
-                 * Silenciar narración.
-                 */
 
                 if (narrationAudio) {
 
@@ -620,40 +621,26 @@ if (soundButton) {
 
             } else {
 
-                /*
-                 * Restaurar música.
-                 */
-
                 music.volume =
                     MUSIC_VOLUME;
 
 
-                /*
-                 * Restaurar narración.
-                 */
-
                 if (narrationAudio) {
 
                     narrationAudio.volume =
-                        NARRATION_VOLUME;
+                        1;
 
                 }
 
-
-                /*
-                 * Continuar música.
-                 */
 
                 if (
                     started &&
                     !finished
                 ) {
 
-                    music
-                        .play()
-                        .catch(
-                            () => {}
-                        );
+                    music.play().catch(
+                        () => {}
+                    );
 
                 }
 
@@ -674,7 +661,7 @@ if (soundButton) {
 
 document.addEventListener(
     "keydown",
-    (event) => {
+    event => {
 
         if (
             !started ||
@@ -686,10 +673,6 @@ document.addEventListener(
         }
 
 
-        /*
-         * SIGUIENTE
-         */
-
         if (
             event.key ===
             "ArrowRight"
@@ -699,10 +682,6 @@ document.addEventListener(
 
         }
 
-
-        /*
-         * ANTERIOR
-         */
 
         if (
             event.key ===
@@ -714,26 +693,19 @@ document.addEventListener(
         }
 
 
-        /*
-         * ESPACIO = PAUSAR / CONTINUAR MÚSICA
-         */
-
         if (
-            event.key === " "
+            event.key ===
+            " "
         ) {
 
             event.preventDefault();
 
 
-            if (
-                music.paused
-            ) {
+            if (music.paused) {
 
-                music
-                    .play()
-                    .catch(
-                        () => {}
-                    );
+                music.play().catch(
+                    () => {}
+                );
 
             } else {
 
@@ -751,14 +723,16 @@ document.addEventListener(
    TOUCH / SWIPE
 ========================================================= */
 
-let touchStartX = 0;
+let touchStartX =
+    0;
 
-let touchEndX = 0;
+let touchEndX =
+    0;
 
 
 document.addEventListener(
     "touchstart",
-    (event) => {
+    event => {
 
         if (
             !started ||
@@ -784,7 +758,7 @@ document.addEventListener(
 
 document.addEventListener(
     "touchend",
-    (event) => {
+    event => {
 
         if (
             !started ||
@@ -802,7 +776,27 @@ document.addEventListener(
                 .screenX;
 
 
-        handleSwipe();
+        const difference =
+            touchStartX -
+            touchEndX;
+
+
+        if (
+            difference > 60
+        ) {
+
+            nextScene();
+
+        }
+
+
+        if (
+            difference < -60
+        ) {
+
+            previousScene();
+
+        }
 
     },
     {
@@ -811,50 +805,8 @@ document.addEventListener(
 );
 
 
-function handleSwipe() {
-
-    if (finished) {
-        return;
-    }
-
-
-    const difference =
-        touchStartX -
-        touchEndX;
-
-
-    /*
-     * Deslizar hacia la izquierda
-     * = siguiente.
-     */
-
-    if (
-        difference > 60
-    ) {
-
-        nextScene();
-
-    }
-
-
-    /*
-     * Deslizar hacia la derecha
-     * = anterior.
-     */
-
-    if (
-        difference < -60
-    ) {
-
-        previousScene();
-
-    }
-
-}
-
-
 /* =========================================================
-   PRE-CARGAR IMÁGENES
+   PRECARGAR IMÁGENES
 ========================================================= */
 
 const imagePaths = [
@@ -873,28 +825,20 @@ const imagePaths = [
 
 
 imagePaths.forEach(
-    (path) => {
+    path => {
 
-        const img =
+        const image =
             new Image();
 
-        img.src = path;
+        image.src =
+            path;
 
     }
 );
 
 
 /* =========================================================
-   PRE-CARGAR AUDIO
-========================================================= */
-
-music.preload =
-    "auto";
-
-
-/* =========================================================
-   VISIBILITY
-   Si se cambia de pestaña, pausamos.
+   VISIBILIDAD DE PESTAÑA
 ========================================================= */
 
 document.addEventListener(
@@ -915,9 +859,8 @@ document.addEventListener(
             document.hidden
         ) {
 
-            /*
-             * Pausar temporizadores.
-             */
+            pausedByVisibility =
+                true;
 
             clearTimeout(timer);
 
@@ -925,17 +868,7 @@ document.addEventListener(
                 progressTimer
             );
 
-
-            /*
-             * Pausar música.
-             */
-
             music.pause();
-
-
-            /*
-             * Pausar narración.
-             */
 
             if (narrationAudio) {
 
@@ -945,32 +878,33 @@ document.addEventListener(
 
         } else {
 
-            /*
-             * Regresar a la pestaña.
-             */
+            if (
+                !pausedByVisibility
+            ) {
 
-            if (finished) {
                 return;
-            }
-
-
-            /*
-             * Continuar música.
-             */
-
-            if (!muted) {
-
-                music
-                    .play()
-                    .catch(
-                        () => {}
-                    );
 
             }
 
 
+            pausedByVisibility =
+                false;
+
+
+            if (
+                !muted
+            ) {
+
+                music.play().catch(
+                    () => {}
+                );
+
+            }
+
+
             /*
-             * Continuar escena actual.
+             * Continuar la escena actual
+             * con un nuevo ciclo completo.
              */
 
             playScene(current);
@@ -984,16 +918,5 @@ document.addEventListener(
 /* =========================================================
    ESTADO INICIAL
 ========================================================= */
-
-/*
- * El video NO comienza automáticamente.
- *
- * Espera a que el usuario pulse:
- *
- * ▶ REPRODUCIR VIDEO
- *
- * Esto permite que la música
- * pueda comenzar correctamente.
- */
 
 updateSoundButton();
