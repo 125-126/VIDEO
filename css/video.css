@@ -1,7 +1,7 @@
 /* =========================================================
    COMERCIAL AMAYA
    VIDEO VERTICAL 9:16
-   MOBILE FIRST
+   RESPONSIVE - PC + CELULAR
 ========================================================= */
 
 :root {
@@ -32,6 +32,7 @@ body {
     height: 100%;
     overflow: hidden;
     background: #020711;
+
     font-family:
         Inter,
         Arial,
@@ -76,13 +77,18 @@ body {
 
 .background {
     position: absolute;
+
     inset: 0;
+
     z-index: 0;
+
     pointer-events: none;
 }
 
+
 .grid {
     position: absolute;
+
     inset: -20%;
 
     opacity: .15;
@@ -105,8 +111,10 @@ body {
         rotateX(60deg)
         translateY(20%);
 
-    animation: gridMove 15s linear infinite;
+    animation:
+        gridMove 15s linear infinite;
 }
+
 
 @keyframes gridMove {
 
@@ -142,21 +150,26 @@ body {
     opacity: .22;
 }
 
+
 .glow-1 {
     top: -20%;
     left: -25%;
+
     background: var(--blue);
 }
+
 
 .glow-2 {
     right: -25%;
     bottom: -15%;
+
     background: var(--green);
 }
 
 
 .noise {
     position: absolute;
+
     inset: 0;
 
     opacity: .04;
@@ -174,18 +187,24 @@ body {
 
 .scene {
     position: absolute;
+
     inset: 0;
 
     z-index: 2;
 
     display: flex;
+
     justify-content: center;
     align-items: center;
 
+    /*
+       MENOS ESPACIO ARRIBA
+       El contenido empieza más arriba.
+    */
     padding:
-        70px
+        35px
         22px
-        60px;
+        45px;
 
     opacity: 0;
 
@@ -204,8 +223,10 @@ body {
         visibility 0s linear 1s;
 }
 
+
 .scene.active {
     opacity: 1;
+
     visibility: visible;
 
     transform:
@@ -225,20 +246,36 @@ body {
 .scene-content {
 
     width: 100%;
+
     max-width: 520px;
 
     height: 100%;
 
     display: flex;
+
     flex-direction: column;
 
     align-items: center;
-    justify-content: center;
+
+    /*
+       IMPORTANTE:
+       Antes estaba centrado verticalmente.
+       Ahora comienza más arriba.
+    */
+    justify-content: flex-start;
 
     text-align: center;
 
     position: relative;
+
+    padding-top: 20px;
+
+    /*
+       Ajuste fino hacia arriba.
+    */
+    transform: translateY(-2vh);
 }
+
 
 .center {
     justify-content: center;
@@ -252,7 +289,12 @@ body {
 .eyebrow,
 .top-label {
 
-    font-size: clamp(10px, 2.7vw, 14px);
+    font-size:
+        clamp(
+            10px,
+            2.7vw,
+            14px
+        );
 
     letter-spacing: .28em;
 
@@ -271,6 +313,7 @@ body {
         transform .7s ease .25s;
 }
 
+
 .scene.active .eyebrow,
 .scene.active .top-label {
 
@@ -282,7 +325,12 @@ body {
 
 h1 {
 
-    font-size: clamp(42px, 11vw, 74px);
+    font-size:
+        clamp(
+            42px,
+            11vw,
+            74px
+        );
 
     line-height: .92;
 
@@ -300,6 +348,7 @@ h1 {
         opacity .8s ease .35s,
         transform .8s cubic-bezier(.16,1,.3,1) .35s;
 }
+
 
 .scene.active h1 {
 
@@ -323,7 +372,12 @@ h2 {
 
     width: 100%;
 
-    font-size: clamp(31px, 8vw, 55px);
+    font-size:
+        clamp(
+            31px,
+            8vw,
+            55px
+        );
 
     line-height: .94;
 
@@ -342,6 +396,7 @@ h2 {
         transform .7s ease .3s;
 }
 
+
 .scene.active h2 {
 
     opacity: 1;
@@ -352,11 +407,20 @@ h2 {
 
 .scene-description {
 
-    width: min(100%, 430px);
+    width:
+        min(
+            100%,
+            430px
+        );
 
     color: var(--muted);
 
-    font-size: clamp(14px, 3.8vw, 18px);
+    font-size:
+        clamp(
+            14px,
+            3.8vw,
+            18px
+        );
 
     line-height: 1.55;
 
@@ -370,6 +434,7 @@ h2 {
         opacity .7s ease .5s,
         transform .7s ease .5s;
 }
+
 
 .scene.active .scene-description {
 
@@ -385,7 +450,11 @@ h2 {
 
 .logo-wrap {
 
-    width: min(70vw, 330px);
+    width:
+        min(
+            70vw,
+            330px
+        );
 
     margin-bottom: 28px;
 
@@ -403,6 +472,7 @@ h2 {
         filter 1s ease .2s;
 }
 
+
 .scene.active .logo-wrap {
 
     opacity: 1;
@@ -413,6 +483,7 @@ h2 {
 
     filter: blur(0);
 }
+
 
 .logo {
 
@@ -439,16 +510,28 @@ h2 {
 
     position: relative;
 
-    width: min(82vw, 390px);
+    /*
+       IMAGEN MÁS GRANDE
+    */
+    width:
+        min(
+            88vw,
+            440px
+        );
 
-    height: min(42vh, 330px);
+    height:
+        min(
+            48vh,
+            380px
+        );
 
     display: flex;
 
     align-items: center;
     justify-content: center;
 
-    margin: 0 auto 22px;
+    margin:
+        0 auto 22px;
 
     opacity: 0;
 
@@ -460,6 +543,7 @@ h2 {
         opacity .9s ease .4s,
         transform 1s cubic-bezier(.16,1,.3,1) .4s;
 }
+
 
 .scene.active .pos-box {
 
@@ -479,6 +563,7 @@ h2 {
     object-fit: contain;
 
     position: relative;
+
     z-index: 2;
 
     filter:
@@ -486,8 +571,10 @@ h2 {
             0 30px 35px rgba(0,0,0,.65)
         );
 
-    animation: posFloat 4s ease-in-out infinite;
+    animation:
+        posFloat 4s ease-in-out infinite;
 }
+
 
 @keyframes posFloat {
 
@@ -549,6 +636,7 @@ h2 {
         transform .6s ease .7s;
 }
 
+
 .scene.active .feature-row {
 
     opacity: 1;
@@ -571,10 +659,12 @@ h2 {
     padding: 10px 4px;
 
     display: flex;
+
     flex-direction: column;
 
     gap: 4px;
 }
+
 
 .feature span {
 
@@ -585,9 +675,15 @@ h2 {
     letter-spacing: .1em;
 }
 
+
 .feature strong {
 
-    font-size: clamp(10px, 2.6vw, 13px);
+    font-size:
+        clamp(
+            10px,
+            2.6vw,
+            13px
+        );
 
     letter-spacing: .05em;
 }
@@ -601,16 +697,28 @@ h2 {
 
     position: relative;
 
-    width: min(62vw, 270px);
+    /*
+       TICKET MÁS GRANDE
+    */
+    width:
+        min(
+            70vw,
+            310px
+        );
 
-    height: min(46vh, 430px);
+    height:
+        min(
+            52vh,
+            480px
+        );
 
     display: flex;
 
     align-items: center;
     justify-content: center;
 
-    margin: 0 auto 15px;
+    margin:
+        0 auto 15px;
 
     opacity: 0;
 
@@ -622,6 +730,7 @@ h2 {
         opacity .8s ease .35s,
         transform 1s cubic-bezier(.16,1,.3,1) .35s;
 }
+
 
 .scene.active .ticket-stage {
 
@@ -681,7 +790,12 @@ h2 {
 
     color: #a9f5c1;
 
-    font-size: clamp(10px, 2.7vw, 13px);
+    font-size:
+        clamp(
+            10px,
+            2.7vw,
+            13px
+        );
 
     letter-spacing: .08em;
 
@@ -696,12 +810,14 @@ h2 {
         transform .6s ease .8s;
 }
 
+
 .scene.active .bottom-message {
 
     opacity: 1;
 
     transform: translateY(0);
 }
+
 
 .bottom-message span {
 
@@ -731,9 +847,20 @@ h2 {
 
     position: relative;
 
-    width: min(60vw, 260px);
+    /*
+       QR / TICKET MÁS GRANDE
+    */
+    width:
+        min(
+            68vw,
+            300px
+        );
 
-    height: min(43vh, 400px);
+    height:
+        min(
+            50vh,
+            460px
+        );
 
     display: flex;
 
@@ -754,6 +881,7 @@ h2 {
         opacity .8s ease .35s,
         transform 1s cubic-bezier(.16,1,.3,1) .35s;
 }
+
 
 .scene.active .qr-ticket-stage {
 
@@ -778,8 +906,10 @@ h2 {
 
     transform: scale(1.02);
 
-    animation: ticketPulse 4s ease-in-out infinite;
+    animation:
+        ticketPulse 4s ease-in-out infinite;
 }
+
 
 @keyframes ticketPulse {
 
@@ -826,7 +956,6 @@ h2 {
     position: absolute;
 
     left: 15%;
-
     right: 15%;
 
     top: 40%;
@@ -853,11 +982,11 @@ h2 {
         scanTicket 2.4s ease-in-out infinite;
 }
 
+
 @keyframes scanTicket {
 
     0% {
         transform: translateY(-100px);
-
         opacity: 0;
     }
 
@@ -875,7 +1004,6 @@ h2 {
 
     100% {
         transform: translateY(100px);
-
         opacity: 0;
     }
 }
@@ -896,7 +1024,12 @@ h2 {
 
     color: #bdeaff;
 
-    font-size: clamp(10px, 2.8vw, 13px);
+    font-size:
+        clamp(
+            10px,
+            2.8vw,
+            13px
+        );
 
     letter-spacing: .08em;
 
@@ -910,6 +1043,7 @@ h2 {
         opacity .6s ease .7s,
         transform .6s ease .7s;
 }
+
 
 .scene.active .qr-message {
 
@@ -925,11 +1059,23 @@ h2 {
 
 .phone {
 
-    width: min(52vw, 220px);
+    /*
+       TELÉFONO MÁS GRANDE
+    */
+    width:
+        min(
+            58vw,
+            245px
+        );
 
-    height: min(42vh, 410px);
+    height:
+        min(
+            48vh,
+            450px
+        );
 
-    margin: 4px auto 15px;
+    margin:
+        4px auto 15px;
 
     opacity: 0;
 
@@ -941,6 +1087,7 @@ h2 {
         opacity .8s ease .35s,
         transform 1s cubic-bezier(.16,1,.3,1) .35s;
 }
+
 
 .scene.active .phone {
 
@@ -1046,6 +1193,7 @@ h2 {
     border-style: solid;
 }
 
+
 .camera-corner.tl {
 
     left: -1px;
@@ -1053,6 +1201,7 @@ h2 {
 
     border-width: 3px 0 0 3px;
 }
+
 
 .camera-corner.tr {
 
@@ -1062,6 +1211,7 @@ h2 {
     border-width: 3px 3px 0 0;
 }
 
+
 .camera-corner.bl {
 
     left: -1px;
@@ -1069,6 +1219,7 @@ h2 {
 
     border-width: 0 0 3px 3px;
 }
+
 
 .camera-corner.br {
 
@@ -1103,8 +1254,10 @@ h2 {
     box-shadow:
         0 0 15px var(--green);
 
-    animation: cameraScan 2s ease-in-out infinite;
+    animation:
+        cameraScan 2s ease-in-out infinite;
 }
+
 
 @keyframes cameraScan {
 
@@ -1147,7 +1300,12 @@ h2 {
 
     gap: 8px;
 
-    font-size: clamp(10px, 2.7vw, 13px);
+    font-size:
+        clamp(
+            10px,
+            2.7vw,
+            13px
+        );
 
     letter-spacing: .08em;
 
@@ -1164,12 +1322,14 @@ h2 {
         transform .6s ease .8s;
 }
 
+
 .scene.active .success-message {
 
     opacity: 1;
 
     transform: translateY(0);
 }
+
 
 .success-message span {
 
@@ -1197,7 +1357,14 @@ h2 {
 
 .history-card {
 
-    width: min(88vw, 430px);
+    /*
+       HISTORIAL MÁS GRANDE
+    */
+    width:
+        min(
+            94vw,
+            470px
+        );
 
     padding: 14px;
 
@@ -1228,6 +1395,7 @@ h2 {
         transform 1s cubic-bezier(.16,1,.3,1) .35s;
 }
 
+
 .scene.active .history-card {
 
     opacity: 1;
@@ -1251,6 +1419,7 @@ h2 {
     margin-bottom: 12px;
 }
 
+
 .history-header small {
 
     display: block;
@@ -1263,6 +1432,7 @@ h2 {
 
     margin-bottom: 3px;
 }
+
 
 .history-header strong {
 
@@ -1299,7 +1469,10 @@ h2 {
 
     width: 100%;
 
-    max-height: 36vh;
+    /*
+       IMAGEN DEL HISTORIAL MÁS GRANDE
+    */
+    max-height: 42vh;
 
     overflow: hidden;
 
@@ -1343,7 +1516,11 @@ h2 {
 
 .final-logo {
 
-    width: min(62vw, 290px);
+    width:
+        min(
+            62vw,
+            290px
+        );
 
     height: auto;
 
@@ -1358,6 +1535,7 @@ h2 {
         transform 1.1s cubic-bezier(.16,1,.3,1) .25s;
 }
 
+
 .scene.active .final-logo {
 
     opacity: 1;
@@ -1368,7 +1546,12 @@ h2 {
 
 .final h2 {
 
-    font-size: clamp(29px, 7.5vw, 50px);
+    font-size:
+        clamp(
+            29px,
+            7.5vw,
+            50px
+        );
 
     margin-bottom: 18px;
 }
@@ -1376,13 +1559,22 @@ h2 {
 
 .final p {
 
-    width: min(100%, 420px);
+    width:
+        min(
+            100%,
+            420px
+        );
 
     color: var(--muted);
 
     line-height: 1.55;
 
-    font-size: clamp(13px, 3.5vw, 17px);
+    font-size:
+        clamp(
+            13px,
+            3.5vw,
+            17px
+        );
 
     opacity: 0;
 
@@ -1392,6 +1584,7 @@ h2 {
         opacity .7s ease .7s,
         transform .7s ease .7s;
 }
+
 
 .scene.active .final p {
 
@@ -1430,6 +1623,7 @@ h2 {
         transform .7s ease .9s;
 }
 
+
 .scene.active .final-tag {
 
     opacity: 1;
@@ -1458,6 +1652,7 @@ h2 {
     color: rgba(255,255,255,.65);
 }
 
+
 .counter i {
 
     color: rgba(255,255,255,.2);
@@ -1482,11 +1677,13 @@ h2 {
     left: 0;
 
     width: 100%;
+
     height: 3px;
 
     background:
         rgba(255,255,255,.07);
 }
+
 
 #progressBar {
 
@@ -1574,7 +1771,11 @@ h2 {
 
 .start-logo {
 
-    width: min(70vw, 330px);
+    width:
+        min(
+            70vw,
+            330px
+        );
 
     height: auto;
 
@@ -1634,34 +1835,46 @@ h2 {
 @media (min-width: 700px) {
 
     .scene {
+
         padding:
-            70px
+            35px
             50px
-            70px;
+            60px;
     }
 
     .scene-content {
+
         max-width: 650px;
+
+        /*
+           También subimos el contenido en PC.
+        */
+        transform:
+            translateY(-2vh);
     }
 
     .pos-box {
+
         width: 450px;
         height: 360px;
     }
 
     .ticket-stage {
-        width: 280px;
-        height: 440px;
+
+        width: 300px;
+        height: 460px;
     }
 
     .qr-ticket-stage {
-        width: 280px;
-        height: 420px;
+
+        width: 300px;
+        height: 440px;
     }
 
     .phone {
-        width: 230px;
-        height: 420px;
+
+        width: 245px;
+        height: 450px;
     }
 }
 
@@ -1670,42 +1883,199 @@ h2 {
    CELULARES PEQUEÑOS
 ========================================================= */
 
-@media (max-height: 680px) {
+@media (max-height: 700px) {
 
     .scene {
-        padding-top: 55px;
-        padding-bottom: 45px;
+
+        padding-top: 25px;
+        padding-bottom: 35px;
+    }
+
+    .scene-content {
+
+        padding-top: 10px;
+
+        /*
+           En pantallas bajitas no lo subimos demasiado.
+        */
+        transform:
+            translateY(-1vh);
     }
 
     h1 {
+
         font-size: 39px;
+
         margin-bottom: 15px;
     }
 
     h2 {
+
         font-size: 28px;
+
         margin-bottom: 12px;
     }
 
     .scene-description {
+
         font-size: 12px;
+
         margin-bottom: 12px;
     }
 
+    .pos-box {
+
+        height: 40vh;
+
+        margin-bottom: 15px;
+    }
+
     .ticket-stage {
-        height: 35vh;
+
+        height: 39vh;
+
+        margin-bottom: 10px;
     }
 
     .qr-ticket-stage {
-        height: 34vh;
+
+        height: 37vh;
+
+        margin-bottom: 12px;
     }
 
     .phone {
-        height: 33vh;
+
+        height: 37vh;
+
+        margin-bottom: 10px;
     }
 
     .history-image-wrap {
-        max-height: 27vh;
+
+        max-height: 32vh;
+    }
+
+    .final-logo {
+
+        width: 55vw;
+
+        margin-bottom: 20px;
+    }
+
+    .final-tag {
+
+        margin-top: 18px;
+    }
+}
+
+
+/* =========================================================
+   CELULARES MUY BAJITOS
+========================================================= */
+
+@media (max-height: 580px) {
+
+    .scene {
+
+        padding-top: 18px;
+        padding-bottom: 25px;
+    }
+
+    .scene-content {
+
+        padding-top: 5px;
+
+        transform:
+            translateY(0);
+    }
+
+    .eyebrow,
+    .top-label {
+
+        margin-bottom: 10px;
+    }
+
+    h1 {
+
+        font-size: 34px;
+
+        margin-bottom: 12px;
+    }
+
+    h2 {
+
+        font-size: 25px;
+
+        margin-bottom: 10px;
+    }
+
+    .scene-description {
+
+        font-size: 11px;
+
+        line-height: 1.4;
+
+        margin-bottom: 8px;
+    }
+
+    .pos-box {
+
+        height: 34vh;
+
+        margin-bottom: 10px;
+    }
+
+    .ticket-stage {
+
+        height: 32vh;
+
+        margin-bottom: 7px;
+    }
+
+    .qr-ticket-stage {
+
+        height: 30vh;
+
+        margin-bottom: 8px;
+    }
+
+    .phone {
+
+        height: 30vh;
+
+        margin-bottom: 7px;
+    }
+
+    .history-image-wrap {
+
+        max-height: 26vh;
+    }
+
+    .final-logo {
+
+        width: 48vw;
+
+        margin-bottom: 15px;
+    }
+
+    .final h2 {
+
+        font-size: 25px;
+
+        margin-bottom: 10px;
+    }
+
+    .final p {
+
+        font-size: 11px;
+    }
+
+    .final-tag {
+
+        margin-top: 12px;
+
+        padding: 7px 13px;
     }
 }
 
@@ -1716,13 +2086,41 @@ h2 {
 
 .recording .counter,
 .recording .sound-button {
+
     display: none;
 }
+
 
 .recording .progress {
+
     display: none;
 }
 
+
 .recording {
+
     cursor: none;
+}
+
+
+/* =========================================================
+   FINALIZADO
+   Cuando termina el video no vuelve a comenzar.
+========================================================= */
+
+.video-finished .progress {
+
+    display: block;
+}
+
+
+.video-finished #progressBar {
+
+    width: 100% !important;
+}
+
+
+.video-finished .scene {
+
+    pointer-events: none;
 }
