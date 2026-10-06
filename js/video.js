@@ -38,6 +38,9 @@ const SCENE_TIME =
 const MUSIC_VOLUME =
     0.35;
 
+const NARRATION_VOLUME =
+    1.0;
+
 
 /* =========================================================
    ESTADO
@@ -104,6 +107,7 @@ const narrations = [
 
 ];
 
+
 let narrationAudio =
     null;
 
@@ -162,9 +166,9 @@ function startVideo() {
         false;
 
 
-    /*
-     * Ocultar pantalla inicial.
-     */
+    /* -----------------------------------------
+       Ocultar pantalla inicial
+    ----------------------------------------- */
 
     if (startScreen) {
 
@@ -175,28 +179,23 @@ function startVideo() {
     }
 
 
-    /*
-     * Activar modo de grabación.
-     */
+    /* -----------------------------------------
+       Activar modo de grabación
+    ----------------------------------------- */
 
     document.body.classList.add(
         "recording"
     );
 
 
-    /*
-     * Asegurar que no exista
-     * un estado final anterior.
-     */
-
     document.body.classList.remove(
         "video-finished"
     );
 
 
-    /*
-     * Preparar música.
-     */
+    /* -----------------------------------------
+       Preparar música
+    ----------------------------------------- */
 
     music.currentTime =
         0;
@@ -207,31 +206,37 @@ function startVideo() {
             : MUSIC_VOLUME;
 
 
-    /*
-     * Reproducir música.
-     */
+    /* -----------------------------------------
+       Comenzar escena 1
+    ----------------------------------------- */
+
+    playScene(0);
+
+
+    /* -----------------------------------------
+       Reproducir música
+    ----------------------------------------- */
 
     if (!muted) {
 
-        music.play().catch(
-            error => {
+        music.play()
+            .then(() => {
 
                 console.log(
+                    "Música reproduciéndose correctamente."
+                );
+
+            })
+            .catch(error => {
+
+                console.error(
                     "No se pudo reproducir la música:",
                     error
                 );
 
-            }
-        );
+            });
 
     }
-
-
-    /*
-     * Comenzar desde escena 1.
-     */
-
-    playScene(0);
 
 }
 
@@ -259,24 +264,23 @@ function playScene(index) {
     }
 
 
-    /*
-     * Limpiar temporizadores.
-     */
+    /* -----------------------------------------
+       Limpiar temporizadores
+    ----------------------------------------- */
 
     clearTimers();
 
 
-    /*
-     * Detener narración anterior.
-     */
+    /* -----------------------------------------
+       Detener narración anterior
+    ----------------------------------------- */
 
     stopNarration();
 
 
-    /*
-     * Activar únicamente
-     * la escena correspondiente.
-     */
+    /* -----------------------------------------
+       Activar únicamente la escena actual
+    ----------------------------------------- */
 
     scenes.forEach(
         (scene, i) => {
@@ -290,17 +294,17 @@ function playScene(index) {
     );
 
 
-    /*
-     * Actualizar escena actual.
-     */
+    /* -----------------------------------------
+       Actualizar escena actual
+    ----------------------------------------- */
 
     current =
         index;
 
 
-    /*
-     * Actualizar contador.
-     */
+    /* -----------------------------------------
+       Actualizar contador
+    ----------------------------------------- */
 
     if (currentScene) {
 
@@ -311,9 +315,9 @@ function playScene(index) {
     }
 
 
-    /*
-     * Reiniciar barra.
-     */
+    /* -----------------------------------------
+       Reiniciar barra
+    ----------------------------------------- */
 
     if (progressBar) {
 
@@ -323,40 +327,45 @@ function playScene(index) {
     }
 
 
-    /*
-     * Iniciar progreso.
-     */
+    /* -----------------------------------------
+       Iniciar progreso
+    ----------------------------------------- */
 
     startProgress();
 
 
-    /*
-     * Reproducir narración
-     * si existe.
-     */
+    /* -----------------------------------------
+       Reproducir narración
+    ----------------------------------------- */
 
     playNarration(index);
 
 
-    /*
-     * Mantener música activa.
-     */
+    /* -----------------------------------------
+       Mantener música activa
+    ----------------------------------------- */
 
     if (
         !muted &&
         music.paused
     ) {
 
-        music.play().catch(
-            () => {}
-        );
+        music.play()
+            .catch(error => {
+
+                console.warn(
+                    "La música no pudo continuar:",
+                    error
+                );
+
+            });
 
     }
 
 
-    /*
-     * Programar siguiente escena.
-     */
+    /* -----------------------------------------
+       Programar siguiente escena
+    ----------------------------------------- */
 
     timer =
         setTimeout(
@@ -386,11 +395,6 @@ function nextScene() {
     const next =
         current + 1;
 
-
-    /*
-     * Si ya estamos en la última,
-     * finalizar el video.
-     */
 
     if (
         next >= scenes.length
@@ -455,25 +459,23 @@ function finishVideo() {
         true;
 
 
-    /*
-     * Detener absolutamente
-     * todos los temporizadores.
-     */
+    /* -----------------------------------------
+       Detener temporizadores
+    ----------------------------------------- */
 
     clearTimers();
 
 
-    /*
-     * Detener narración.
-     */
+    /* -----------------------------------------
+       Detener narración
+    ----------------------------------------- */
 
     stopNarration();
 
 
-    /*
-     * Activar solamente
-     * la última escena.
-     */
+    /* -----------------------------------------
+       Activar última escena
+    ----------------------------------------- */
 
     scenes.forEach(
         (scene, index) => {
@@ -487,9 +489,9 @@ function finishVideo() {
     );
 
 
-    /*
-     * Actualizar escena.
-     */
+    /* -----------------------------------------
+       Actualizar escena
+    ----------------------------------------- */
 
     current =
         scenes.length - 1;
@@ -504,9 +506,9 @@ function finishVideo() {
     }
 
 
-    /*
-     * Completar barra.
-     */
+    /* -----------------------------------------
+       Completar barra
+    ----------------------------------------- */
 
     if (progressBar) {
 
@@ -516,9 +518,9 @@ function finishVideo() {
     }
 
 
-    /*
-     * Detener música.
-     */
+    /* -----------------------------------------
+       Detener música
+    ----------------------------------------- */
 
     music.pause();
 
@@ -526,12 +528,17 @@ function finishVideo() {
         0;
 
 
-    /*
-     * Marcar video terminado.
-     */
+    /* -----------------------------------------
+       Marcar video terminado
+    ----------------------------------------- */
 
     document.body.classList.add(
         "video-finished"
+    );
+
+
+    console.log(
+        "VIDEO FINALIZADO."
     );
 
 }
@@ -564,9 +571,7 @@ function startProgress() {
         setInterval(
             () => {
 
-                if (
-                    finished
-                ) {
+                if (finished) {
 
                     clearInterval(
                         progressTimer
@@ -616,33 +621,180 @@ function playNarration(index) {
         narrations[index];
 
 
-    if (
-        !narration ||
-        muted
-    ) {
+    console.log(
+        "----------------------------------------"
+    );
+
+
+    console.log(
+        "ESCENA:",
+        index + 1
+    );
+
+
+    console.log(
+        "ARCHIVO DE NARRACIÓN:",
+        narration
+    );
+
+
+    /* -----------------------------------------
+       Comprobar existencia de narración
+    ----------------------------------------- */
+
+    if (!narration) {
+
+        console.warn(
+            "No existe narración para esta escena."
+        );
 
         return;
 
     }
 
 
-    narrationAudio =
-        new Audio(narration);
+    /* -----------------------------------------
+       No reproducir si está silenciado
+    ----------------------------------------- */
 
+    if (muted) {
+
+        console.log(
+            "Narración silenciada."
+        );
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------
+       Crear audio
+    ----------------------------------------- */
+
+    narrationAudio =
+        new Audio();
+
+
+    narrationAudio.src =
+        narration;
 
     narrationAudio.preload =
         "auto";
 
     narrationAudio.volume =
-        1;
+        NARRATION_VOLUME;
 
 
-    narrationAudio.play().catch(
-        () => {}
+    /* -----------------------------------------
+       Audio cargado
+    ----------------------------------------- */
+
+    narrationAudio.addEventListener(
+        "loadeddata",
+        () => {
+
+            console.log(
+                "✓ NARRACIÓN CARGADA:",
+                narration
+            );
+
+        }
     );
+
+
+    /* -----------------------------------------
+       Audio listo
+    ----------------------------------------- */
+
+    narrationAudio.addEventListener(
+        "canplaythrough",
+        () => {
+
+            console.log(
+                "✓ NARRACIÓN LISTA PARA REPRODUCIR:",
+                narration
+            );
+
+        },
+        {
+            once: true
+        }
+    );
+
+
+    /* -----------------------------------------
+       Narración terminada
+    ----------------------------------------- */
+
+    narrationAudio.addEventListener(
+        "ended",
+        () => {
+
+            console.log(
+                "✓ NARRACIÓN TERMINÓ:",
+                narration
+            );
+
+        }
+    );
+
+
+    /* -----------------------------------------
+       Error de carga
+    ----------------------------------------- */
+
+    narrationAudio.addEventListener(
+        "error",
+        event => {
+
+            console.error(
+                "❌ ERROR CARGANDO NARRACIÓN:",
+                narration,
+                event
+            );
+
+        }
+    );
+
+
+    /* -----------------------------------------
+       Reproducir
+    ----------------------------------------- */
+
+    const playPromise =
+        narrationAudio.play();
+
+
+    if (playPromise !== undefined) {
+
+        playPromise
+            .then(() => {
+
+                console.log(
+                    "🔊 NARRACIÓN REPRODUCIÉNDOSE:",
+                    narration
+                );
+
+            })
+            .catch(error => {
+
+                console.error(
+                    "❌ ERROR AL REPRODUCIR NARRACIÓN:",
+                    narration,
+                    error
+                );
+
+            });
+
+    }
 
 }
 
+
+/* =========================================================
+   DETENER NARRACIÓN
+========================================================= */
 
 function stopNarration() {
 
@@ -653,10 +805,26 @@ function stopNarration() {
     }
 
 
-    narrationAudio.pause();
+    try {
 
-    narrationAudio.currentTime =
-        0;
+        narrationAudio.pause();
+
+        narrationAudio.currentTime =
+            0;
+
+        narrationAudio.src =
+            "";
+
+    }
+    catch (error) {
+
+        console.warn(
+            "No se pudo detener correctamente la narración:",
+            error
+        );
+
+    }
+
 
     narrationAudio =
         null;
@@ -706,19 +874,15 @@ if (soundButton) {
                 !muted;
 
 
-            if (muted) {
+            /* -----------------------------------------
+               SILENCIAR
+            ----------------------------------------- */
 
-                /*
-                 * Silenciar música.
-                 */
+            if (muted) {
 
                 music.volume =
                     0;
 
-
-                /*
-                 * Silenciar narración.
-                 */
 
                 if (narrationAudio) {
 
@@ -727,32 +891,31 @@ if (soundButton) {
 
                 }
 
-            } else {
 
-                /*
-                 * Restaurar música.
-                 */
+                console.log(
+                    "🔇 Sonido silenciado."
+                );
+
+            }
+
+
+            /* -----------------------------------------
+               ACTIVAR SONIDO
+            ----------------------------------------- */
+
+            else {
 
                 music.volume =
                     MUSIC_VOLUME;
 
 
-                /*
-                 * Restaurar narración.
-                 */
-
                 if (narrationAudio) {
 
                     narrationAudio.volume =
-                        1;
+                        NARRATION_VOLUME;
 
                 }
 
-
-                /*
-                 * Reanudar música si
-                 * el video continúa.
-                 */
 
                 if (
                     started &&
@@ -760,11 +923,22 @@ if (soundButton) {
                     music.paused
                 ) {
 
-                    music.play().catch(
-                        () => {}
-                    );
+                    music.play()
+                        .catch(error => {
+
+                            console.warn(
+                                "No se pudo reanudar la música:",
+                                error
+                            );
+
+                        });
 
                 }
+
+
+                console.log(
+                    "🔊 Sonido activado."
+                );
 
             }
 
@@ -785,11 +959,6 @@ document.addEventListener(
     "keydown",
     event => {
 
-        /*
-         * No hacer nada antes
-         * de iniciar el video.
-         */
-
         if (
             !started ||
             finished
@@ -800,9 +969,9 @@ document.addEventListener(
         }
 
 
-        /*
-         * Siguiente.
-         */
+        /* -----------------------------------------
+           Siguiente
+        ----------------------------------------- */
 
         if (
             event.key ===
@@ -818,9 +987,9 @@ document.addEventListener(
         }
 
 
-        /*
-         * Anterior.
-         */
+        /* -----------------------------------------
+           Anterior
+        ----------------------------------------- */
 
         if (
             event.key ===
@@ -836,9 +1005,9 @@ document.addEventListener(
         }
 
 
-        /*
-         * Espacio = pausa/reanudar música.
-         */
+        /* -----------------------------------------
+           Espacio
+        ----------------------------------------- */
 
         if (
             event.key ===
@@ -852,13 +1021,13 @@ document.addEventListener(
 
                 if (!muted) {
 
-                    music.play().catch(
-                        () => {}
-                    );
+                    music.play()
+                        .catch(() => {});
 
                 }
 
-            } else {
+            }
+            else {
 
                 music.pause();
 
@@ -945,9 +1114,9 @@ document.addEventListener(
             touchEndX;
 
 
-        /*
-         * Swipe izquierda.
-         */
+        /* -----------------------------------------
+           Swipe izquierda
+        ----------------------------------------- */
 
         if (
             difference > 60
@@ -960,9 +1129,9 @@ document.addEventListener(
         }
 
 
-        /*
-         * Swipe derecha.
-         */
+        /* -----------------------------------------
+           Swipe derecha
+        ----------------------------------------- */
 
         if (
             difference < -60
@@ -1012,6 +1181,54 @@ imagePaths.forEach(
 
 
 /* =========================================================
+   PRECARGAR NARRACIONES
+========================================================= */
+
+narrations.forEach(
+    path => {
+
+        if (!path) {
+
+            return;
+
+        }
+
+
+        const audio =
+            new Audio();
+
+
+        audio.preload =
+            "auto";
+
+
+        audio.src =
+            path;
+
+
+        audio.addEventListener(
+            "error",
+            () => {
+
+                console.error(
+                    "❌ NO SE PUDO CARGAR EL ARCHIVO:",
+                    path
+                );
+
+            }
+        );
+
+
+        console.log(
+            "Precargando narración:",
+            path
+        );
+
+    }
+);
+
+
+/* =========================================================
    VISIBILIDAD DE PESTAÑA
 ========================================================= */
 
@@ -1029,9 +1246,9 @@ document.addEventListener(
         }
 
 
-        /*
-         * Pestaña oculta.
-         */
+        /* -----------------------------------------
+           Pestaña oculta
+        ----------------------------------------- */
 
         if (document.hidden) {
 
@@ -1057,9 +1274,9 @@ document.addEventListener(
         }
 
 
-        /*
-         * Pestaña visible nuevamente.
-         */
+        /* -----------------------------------------
+           Pestaña visible
+        ----------------------------------------- */
 
         if (
             !pausedByVisibility
@@ -1074,23 +1291,21 @@ document.addEventListener(
             false;
 
 
-        /*
-         * Reanudar música.
-         */
+        /* -----------------------------------------
+           Reanudar música
+        ----------------------------------------- */
 
         if (!muted) {
 
-            music.play().catch(
-                () => {}
-            );
+            music.play()
+                .catch(() => {});
 
         }
 
 
-        /*
-         * Reiniciar el ciclo
-         * de la escena actual.
-         */
+        /* -----------------------------------------
+           Reiniciar escena actual
+        ----------------------------------------- */
 
         playScene(current);
 
@@ -1136,4 +1351,41 @@ scenes.forEach(
         );
 
     }
+);
+
+
+/* =========================================================
+   MENSAJE DE INICIO
+========================================================= */
+
+console.log(
+    "========================================"
+);
+
+console.log(
+    "COMERCIAL AMAYA - MOTOR DE VIDEO"
+);
+
+console.log(
+    "Narraciones configuradas:",
+    narrations
+);
+
+console.log(
+    "Tiempo por escena:",
+    SCENE_TIME + " ms"
+);
+
+console.log(
+    "Volumen música:",
+    MUSIC_VOLUME
+);
+
+console.log(
+    "Volumen narración:",
+    NARRATION_VOLUME
+);
+
+console.log(
+    "========================================"
 );
