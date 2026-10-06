@@ -94,13 +94,13 @@ music.volume =
 
 const narrations = [
 
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
+    "audio/narracion_01.mp3",
+    "audio/narracion_02.mp3",
+    "audio/narracion_03.mp3",
+    "audio/narracion_04.mp3",
+    "audio/narracion_05.mp3",
+    "audio/narracion_06.mp3",
+    "audio/narracion_07.mp3"
 
 ];
 
