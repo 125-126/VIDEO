@@ -32,8 +32,7 @@ const soundButton =
    CONFIGURACIÓN
 ========================================================= */
 
-const SCENE_TIME =
-    7000;
+const SCENE_TIME = 13000;
 
 const MUSIC_VOLUME =
     0.35;
